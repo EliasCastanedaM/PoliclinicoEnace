@@ -42,8 +42,8 @@ header{
   url('https://images.unsplash.com/photo-1516549655169-df83a0774514?q=80&w=1800&auto=format&fit=crop');
   background-size:cover;
   background-position:center;
-  min-height:100vh;
-  padding:0 7% 90px;
+  min-height:92vh;
+  padding:0 6% 70px;
   position:relative;
 }
 
@@ -55,7 +55,9 @@ header::after{
 }
 
 nav{
-  height:92px;
+  max-width:1280px;
+  margin:0 auto;
+  height:84px;
   display:flex;
   align-items:center;
   justify-content:space-between;
@@ -115,13 +117,15 @@ nav{
 }
 
 .hero{
+  max-width:1280px;
+  margin:0 auto;
   position:relative;
   z-index:2;
   display:grid;
-  grid-template-columns:1fr 1fr;
-  gap:70px;
+  grid-template-columns:.95fr 1.05fr;
+  gap:54px;
   align-items:center;
-  padding-top:80px;
+  padding-top:54px;
 }
 
 .badge{
@@ -142,12 +146,12 @@ nav{
 }
 
 .hero-content h1{
-  font-size:82px;
-  line-height:.94;
-  letter-spacing:-4px;
+  font-size:64px;
+  line-height:1;
+  letter-spacing:-3px;
   color:#f8f6f2;
-  margin-bottom:26px;
-  max-width:760px;
+  margin-bottom:24px;
+  max-width:680px;
 }
 
 .hero-content h1 span{
@@ -158,11 +162,11 @@ nav{
 }
 
 .hero-content p{
-  font-size:19px;
-  line-height:1.85;
+  font-size:17px;
+  line-height:1.75;
   color:rgba(255,255,255,.82);
-  max-width:640px;
-  margin-bottom:36px;
+  max-width:590px;
+  margin-bottom:30px;
 }
 
 .hero-buttons{
@@ -239,7 +243,7 @@ nav{
   font-weight:700;
 }
 
-.product-body{display:grid;grid-template-columns:220px 1fr;min-height:580px;}
+.product-body{display:grid;grid-template-columns:200px 1fr;min-height:500px;}
 
 .sidebar{
   background:rgba(0,0,0,.28);
@@ -351,10 +355,20 @@ nav{
 .orange{background:#fef3c7;color:#92400e;}
 .blue{background:#dbeafe;color:#1d4ed8;}
 
-section{padding:100px 7%;}
+section{padding:82px 6%;}
+section > .section-title,
+section > .value-grid,
+section > .module-grid,
+.system-showcase,
+.timeline,
+.form-container{
+  max-width:1180px;
+  margin-left:auto;
+  margin-right:auto;
+}
 .section-title{max-width:860px;margin:0 auto 56px;text-align:center;}
 .eyebrow{color:#b86b34;font-weight:800;font-size:13px;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:12px;}
-.section-title h2{font-size:50px;letter-spacing:-2px;line-height:1.08;margin-bottom:16px;color:#1e1611;}
+.section-title h2{font-size:42px;letter-spacing:-2px;line-height:1.08;margin-bottom:16px;color:#1e1611;}
 .section-title p{font-size:18px;color:#6b7280;line-height:1.8;}
 
 .value-grid,.module-grid{display:grid;gap:22px;}
@@ -365,7 +379,7 @@ section{padding:100px 7%;}
   background:white;
   border:1px solid #ede7df;
   border-radius:24px;
-  padding:34px;
+  padding:28px;
   box-shadow:0 16px 40px rgba(30,22,17,.06);
 }
 
@@ -412,8 +426,8 @@ section{padding:100px 7%;}
   background:rgba(255,255,255,.06);
   border:1px solid rgba(255,255,255,.08);
   border-radius:22px;
-  padding:28px;
-  min-height:210px;
+  padding:24px;
+  min-height:180px;
   backdrop-filter:blur(12px);
 }
 
@@ -564,7 +578,7 @@ section{padding:100px 7%;}
 }
 
 .form-container{
-  max-width:1120px;
+  max-width:1080px;
   margin:auto;
   background:white;
   border:1px solid #ede7df;
@@ -582,16 +596,16 @@ section{padding:100px 7%;}
   background-size:cover;
   background-position:center;
   color:white;
-  padding:48px;
+  padding:42px;
   display:flex;
   flex-direction:column;
   justify-content:space-between;
-  min-height:620px;
+  min-height:540px;
 }
 
 .form-info h3{
-  font-size:38px;
-  line-height:1.1;
+  font-size:32px;
+  line-height:1.12;
   margin-bottom:18px;
   color:#f8f6f2;
 }
@@ -633,7 +647,7 @@ section{padding:100px 7%;}
 }
 
 form{
-  padding:46px;
+  padding:38px;
   display:grid;
   grid-template-columns:repeat(2,1fr);
   gap:20px;
@@ -703,7 +717,7 @@ footer strong{color:#f8f6f2;}
 
 @media(max-width:1100px){
 .hero,.value-grid,.module-grid,.kpi-grid,.system-showcase,.form-container,.timeline{grid-template-columns:1fr;}
-.hero-content h1{font-size:56px;}
+.hero-content h1{font-size:48px;}
 .product-body{grid-template-columns:1fr;}
 .sidebar{display:none;}
 .form-info{min-height:auto;}
