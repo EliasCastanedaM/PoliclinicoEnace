@@ -1,0 +1,987 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Policlínico ENACE | Reserva de Citas</title>
+  <style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+:root{
+  --bg:#f6f3ee;
+  --surface:#ffffff;
+  --surface-soft:#faf7f2;
+  --ink:#171717;
+  --muted:#6b7280;
+  --line:#e7e5e4;
+  --primary:#c47b48;
+  --primary-dark:#9f5f34;
+  --accent:#e8c9a8;
+  --navy:#1e1611;
+  --green:#3f8f63;
+  --shadow:0 25px 70px rgba(30,22,17,.12);
+}
+
+*{box-sizing:border-box;margin:0;padding:0;font-family:'Inter',sans-serif;}
+html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--ink);overflow-x:hidden;}
+a{text-decoration:none;color:inherit;}
+
+.topbar{
+  background:#120d09;
+  color:#d6d3d1;
+  padding:10px 7%;
+  font-size:13px;
+  display:flex;
+  justify-content:space-between;
+}
+
+header{
+  background:
+  linear-gradient(to right, rgba(12,8,5,.78), rgba(12,8,5,.28)),
+  url('https://images.unsplash.com/photo-1516549655169-df83a0774514?q=80&w=1800&auto=format&fit=crop');
+  background-size:cover;
+  background-position:center;
+  min-height:100vh;
+  padding:0 7% 90px;
+  position:relative;
+}
+
+header::after{
+  content:'';
+  position:absolute;
+  inset:0;
+  background:linear-gradient(to bottom, rgba(0,0,0,.1), rgba(0,0,0,.38));
+}
+
+nav{
+  height:92px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  position:relative;
+  z-index:2;
+}
+
+.brand{display:flex;align-items:center;gap:14px;}
+
+.logo-mark{
+  width:54px;
+  height:54px;
+  border-radius:16px;
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.12);
+  backdrop-filter:blur(12px);
+  color:white;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-size:30px;
+  font-weight:800;
+}
+
+.logo-text strong{
+  display:block;
+  font-size:21px;
+  letter-spacing:.5px;
+  color:white;
+}
+
+.logo-text span{
+  font-size:11px;
+  letter-spacing:1.8px;
+  color:rgba(255,255,255,.68);
+  font-weight:600;
+}
+
+.nav-links{
+  display:flex;
+  align-items:center;
+  gap:32px;
+  color:rgba(255,255,255,.84);
+  font-weight:600;
+  font-size:14px;
+}
+
+.nav-links a:hover{color:#ffffff;}
+
+.nav-cta{
+  background:#f5ede5;
+  color:#1e1611!important;
+  padding:13px 18px;
+  border-radius:12px;
+  font-weight:700;
+  box-shadow:0 14px 30px rgba(0,0,0,.18);
+}
+
+.hero{
+  position:relative;
+  z-index:2;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:70px;
+  align-items:center;
+  padding-top:80px;
+}
+
+.badge{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.14);
+  backdrop-filter:blur(12px);
+  color:#f5f5f4;
+  padding:11px 16px;
+  border-radius:999px;
+  font-size:12px;
+  font-weight:700;
+  margin-bottom:26px;
+  letter-spacing:.9px;
+  text-transform:uppercase;
+}
+
+.hero-content h1{
+  font-size:82px;
+  line-height:.94;
+  letter-spacing:-4px;
+  color:#f8f6f2;
+  margin-bottom:26px;
+  max-width:760px;
+}
+
+.hero-content h1 span{
+  color:#f2d1b2;
+  font-style:italic;
+  font-family:Georgia, serif;
+  font-weight:400;
+}
+
+.hero-content p{
+  font-size:19px;
+  line-height:1.85;
+  color:rgba(255,255,255,.82);
+  max-width:640px;
+  margin-bottom:36px;
+}
+
+.hero-buttons{
+  display:flex;
+  gap:14px;
+  flex-wrap:wrap;
+  margin-bottom:34px;
+}
+
+.btn-primary,.btn-secondary{
+  padding:16px 24px;
+  border-radius:12px;
+  font-weight:700;
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+}
+
+.btn-primary{
+  background:#f5ede5;
+  color:#1e1611;
+  box-shadow:0 20px 40px rgba(0,0,0,.22);
+}
+
+.btn-secondary{
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.14);
+  color:white;
+  backdrop-filter:blur(10px);
+}
+
+.trust-row{
+  display:flex;
+  gap:24px;
+  flex-wrap:wrap;
+  color:rgba(255,255,255,.76);
+  font-size:14px;
+  font-weight:600;
+}
+
+.trust-row span::before{
+  content:'✦';
+  color:#f2d1b2;
+  margin-right:8px;
+}
+
+.hero-visual{position:relative;}
+
+.product-window{
+  background:rgba(255,255,255,.08);
+  border:1px solid rgba(255,255,255,.12);
+  backdrop-filter:blur(18px);
+  border-radius:28px;
+  overflow:hidden;
+  box-shadow:0 40px 90px rgba(0,0,0,.35);
+}
+
+.window-bar{
+  height:56px;
+  background:rgba(255,255,255,.05);
+  border-bottom:1px solid rgba(255,255,255,.08);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 20px;
+}
+
+.dots{display:flex;gap:8px;}
+.dot{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,.35);}
+
+.window-title{
+  font-size:13px;
+  color:rgba(255,255,255,.72);
+  font-weight:700;
+}
+
+.product-body{display:grid;grid-template-columns:220px 1fr;min-height:580px;}
+
+.sidebar{
+  background:rgba(0,0,0,.28);
+  color:#e7e5e4;
+  padding:24px 18px;
+  border-right:1px solid rgba(255,255,255,.08);
+}
+
+.side-title{
+  font-size:12px;
+  text-transform:uppercase;
+  letter-spacing:1.5px;
+  color:#d6d3d1;
+  margin-bottom:18px;
+}
+
+.side-item{
+  padding:13px 14px;
+  border-radius:12px;
+  margin-bottom:8px;
+  font-size:14px;
+  font-weight:600;
+}
+
+.side-item.active{
+  background:#f2d1b2;
+  color:#1e1611;
+}
+
+.main-panel{
+  padding:24px;
+  background:rgba(255,255,255,.04);
+}
+
+.panel-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:20px;
+}
+
+.panel-head h3{font-size:24px;color:white;}
+.panel-head p{color:rgba(255,255,255,.62);font-size:13px;margin-top:4px;}
+
+.live-pill{
+  background:#d9f7e6;
+  color:#166534;
+  padding:8px 12px;
+  border-radius:999px;
+  font-size:12px;
+  font-weight:800;
+}
+
+.kpi-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:14px;
+  margin-bottom:18px;
+}
+
+.kpi{
+  background:rgba(255,255,255,.07);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:18px;
+  padding:20px;
+}
+
+.kpi p{color:rgba(255,255,255,.58);font-size:12px;font-weight:700;margin-bottom:8px;}
+.kpi h2{font-size:34px;color:white;}
+.kpi small{color:#86efac;font-weight:700;}
+
+.table-card{
+  background:rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:20px;
+  overflow:hidden;
+}
+
+.table-card h4{
+  padding:16px 18px;
+  border-bottom:1px solid rgba(255,255,255,.08);
+  font-size:15px;
+  color:white;
+}
+
+.row{
+  display:grid;
+  grid-template-columns:1.2fr 1fr .7fr .8fr;
+  gap:10px;
+  align-items:center;
+  padding:15px 18px;
+  border-bottom:1px solid rgba(255,255,255,.06);
+  font-size:13px;
+}
+
+.row strong{font-size:14px;color:white;}
+.row span{color:rgba(255,255,255,.58);}
+.row:last-child{border-bottom:none;}
+
+.status{
+  padding:7px 10px;
+  border-radius:999px;
+  font-size:11px;
+  font-weight:800;
+  text-align:center;
+}
+
+.green{background:#dcfce7;color:#166534;}
+.orange{background:#fef3c7;color:#92400e;}
+.blue{background:#dbeafe;color:#1d4ed8;}
+
+section{padding:100px 7%;}
+.section-title{max-width:860px;margin:0 auto 56px;text-align:center;}
+.eyebrow{color:#b86b34;font-weight:800;font-size:13px;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:12px;}
+.section-title h2{font-size:50px;letter-spacing:-2px;line-height:1.08;margin-bottom:16px;color:#1e1611;}
+.section-title p{font-size:18px;color:#6b7280;line-height:1.8;}
+
+.value-grid,.module-grid{display:grid;gap:22px;}
+.value-grid{grid-template-columns:repeat(3,1fr);}
+.module-grid{grid-template-columns:repeat(4,1fr);}
+
+.value-card{
+  background:white;
+  border:1px solid #ede7df;
+  border-radius:24px;
+  padding:34px;
+  box-shadow:0 16px 40px rgba(30,22,17,.06);
+}
+
+.icon{
+  width:52px;
+  height:52px;
+  border-radius:16px;
+  background:#f3e5d8;
+  color:#9f5f34;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:900;
+  font-size:22px;
+  margin-bottom:22px;
+}
+
+.value-card h3{font-size:24px;margin-bottom:14px;color:#1e1611;}
+.value-card p{color:#6b7280;line-height:1.8;}
+
+.enterprise{
+  background:#1e1611;
+  color:white;
+  position:relative;
+  overflow:hidden;
+}
+
+.enterprise::before{
+  content:'';
+  position:absolute;
+  width:700px;
+  height:700px;
+  background:radial-gradient(circle,rgba(196,123,72,.18),transparent 65%);
+  right:-250px;
+  top:-250px;
+}
+
+.enterprise .section-title h2,
+.enterprise .section-title p{color:white;}
+
+.enterprise .section-title p{color:#d6d3d1;}
+
+.module{
+  background:rgba(255,255,255,.06);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:22px;
+  padding:28px;
+  min-height:210px;
+  backdrop-filter:blur(12px);
+}
+
+.module h3{font-size:20px;margin-bottom:14px;}
+.module p{color:#d6d3d1;line-height:1.8;font-size:14px;}
+
+
+.system-showcase{
+  display:grid;
+  grid-template-columns:.9fr 1.1fr;
+  gap:34px;
+  align-items:start;
+}
+
+.feature-list{
+  display:flex;
+  flex-direction:column;
+  gap:18px;
+}
+
+.feature-item{
+  background:white;
+  border:1px solid #ede7df;
+  border-radius:24px;
+  padding:26px;
+  display:flex;
+  gap:18px;
+  align-items:flex-start;
+  box-shadow:0 14px 38px rgba(30,22,17,.06);
+}
+
+.feature-number{
+  width:42px;
+  height:42px;
+  border-radius:14px;
+  background:#f3e5d8;
+  color:#9f5f34;
+  font-weight:900;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-shrink:0;
+}
+
+.feature-item h3{
+  font-size:20px;
+  margin-bottom:8px;
+  color:#1e1611;
+}
+
+.feature-item p{
+  color:#6b7280;
+  line-height:1.7;
+  font-size:15px;
+}
+
+.large-dashboard{
+  background:white;
+  border:1px solid #ede7df;
+  border-radius:30px;
+  overflow:hidden;
+  box-shadow:var(--shadow);
+}
+
+.large-dashboard .window-bar{
+  background:#faf7f2;
+  border-bottom:1px solid #ede7df;
+}
+
+.large-dashboard .window-title{color:#7c5c46;}
+.large-dashboard .dot{background:#d6c6b8;}
+.large-dashboard .main-panel{background:#fff;padding:30px;}
+.large-dashboard .panel-head h3{color:#1e1611;}
+.large-dashboard .panel-head p{color:#6b7280;}
+.large-dashboard .kpi{
+  background:#faf7f2;
+  border:1px solid #ede7df;
+}
+.large-dashboard .kpi h2{color:#1e1611;}
+.large-dashboard .kpi p{color:#7c5c46;}
+
+.chart-placeholder{
+  height:230px;
+  background:linear-gradient(180deg,#faf7f2,#ffffff);
+  border:1px solid #ede7df;
+  border-radius:24px;
+  margin-top:22px;
+  display:flex;
+  align-items:end;
+  gap:14px;
+  padding:26px;
+}
+
+.bar{
+  flex:1;
+  background:linear-gradient(180deg,#c47b48,#f2d1b2);
+  border-radius:14px 14px 0 0;
+  box-shadow:0 10px 25px rgba(196,123,72,.18);
+}
+
+.process{
+  background:#fff;
+  position:relative;
+}
+
+.timeline{
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:18px;
+}
+
+.step{
+  background:#faf7f2;
+  border:1px solid #ede7df;
+  border-radius:24px;
+  padding:28px;
+  box-shadow:0 12px 30px rgba(30,22,17,.04);
+}
+
+.step b{
+  display:inline-flex;
+  width:42px;
+  height:42px;
+  border-radius:14px;
+  background:#1e1611;
+  color:#f2d1b2;
+  align-items:center;
+  justify-content:center;
+  margin-bottom:20px;
+}
+
+.step h3{
+  font-size:20px;
+  margin-bottom:10px;
+  color:#1e1611;
+}
+
+.step p{
+  color:#6b7280;
+  font-size:15px;
+  line-height:1.7;
+}
+
+.appointment{
+  background:
+    radial-gradient(circle at top right, rgba(196,123,72,.14), transparent 35%),
+    linear-gradient(180deg,#f6f3ee,#eee4da);
+}
+
+.form-container{
+  max-width:1120px;
+  margin:auto;
+  background:white;
+  border:1px solid #ede7df;
+  border-radius:34px;
+  box-shadow:var(--shadow);
+  overflow:hidden;
+  display:grid;
+  grid-template-columns:.85fr 1.15fr;
+}
+
+.form-info{
+  background:
+    linear-gradient(145deg, rgba(30,22,17,.96), rgba(82,50,30,.94)),
+    url('https://images.unsplash.com/photo-1584515933487-779824d29309?q=80&w=1200&auto=format&fit=crop');
+  background-size:cover;
+  background-position:center;
+  color:white;
+  padding:48px;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+  min-height:620px;
+}
+
+.form-info h3{
+  font-size:38px;
+  line-height:1.1;
+  margin-bottom:18px;
+  color:#f8f6f2;
+}
+
+.form-info p{
+  color:rgba(255,255,255,.78);
+  line-height:1.85;
+  margin-bottom:30px;
+  font-size:16px;
+}
+
+.form-info ul{
+  list-style:none;
+  display:flex;
+  flex-direction:column;
+  gap:16px;
+  color:#f5ede5;
+  font-weight:600;
+}
+
+.form-info li{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+
+.form-info li::before{
+  content:'✓';
+  width:28px;
+  height:28px;
+  border-radius:50%;
+  background:rgba(242,209,178,.16);
+  color:#f2d1b2;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  font-weight:900;
+  flex-shrink:0;
+}
+
+form{
+  padding:46px;
+  display:grid;
+  grid-template-columns:repeat(2,1fr);
+  gap:20px;
+  background:#fff;
+}
+
+.full{grid-column:1/-1;}
+
+label{
+  display:block;
+  font-size:13px;
+  font-weight:800;
+  color:#1e1611;
+  margin-bottom:9px;
+}
+
+input,select,textarea{
+  width:100%;
+  border:1px solid #ddd6cf;
+  background:#faf7f2;
+  border-radius:16px;
+  padding:16px 17px;
+  font-size:15px;
+  color:#1e1611;
+  transition:.2s ease;
+}
+
+textarea{
+  min-height:122px;
+  resize:vertical;
+}
+
+input::placeholder,textarea::placeholder{color:#a8a29e;}
+
+input:focus,select:focus,textarea:focus{
+  outline:none;
+  border-color:#c47b48;
+  background:white;
+  box-shadow:0 0 0 4px rgba(196,123,72,.14);
+}
+
+.submit-btn{
+  grid-column:1/-1;
+  border:0;
+  background:linear-gradient(135deg,#c47b48,#9f5f34);
+  color:white;
+  padding:18px;
+  border-radius:16px;
+  font-weight:900;
+  font-size:16px;
+  cursor:pointer;
+  box-shadow:0 18px 38px rgba(196,123,72,.28);
+}
+
+footer{
+  background:#1e1611;
+  color:#cfc5bb;
+  padding:42px 7%;
+  display:flex;
+  justify-content:space-between;
+  gap:20px;
+  flex-wrap:wrap;
+  font-size:14px;
+}
+
+footer strong{color:#f8f6f2;}
+
+@media(max-width:1100px){
+.hero,.value-grid,.module-grid,.kpi-grid,.system-showcase,.form-container,.timeline{grid-template-columns:1fr;}
+.hero-content h1{font-size:56px;}
+.product-body{grid-template-columns:1fr;}
+.sidebar{display:none;}
+.form-info{min-height:auto;}
+}
+
+@media(max-width:720px){
+.topbar,.nav-links{display:none;}
+.hero-content h1{font-size:42px;letter-spacing:-2px;}
+section{padding:72px 6%;}
+.section-title h2{font-size:34px;}
+form{grid-template-columns:1fr;padding:28px;}
+.form-info{padding:32px;}
+.row{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+  <div class="topbar">
+    <span>Plataforma demo para gestión clínica y terapéutica</span>
+    <span>Desarrollado por SLFE Enterprise</span>
+  </div>
+
+  <header>
+    <nav>
+      <div class="brand">
+        <div class="logo-mark">P</div>
+        <div class="logo-text">
+          <strong>POLICLÍNICO ENACE</strong>
+          <span>TU SALUD ES NUESTRA RESPONSABILIDAD</span>
+        </div>
+      </div>
+
+      <div class="nav-links">
+        <a href="#valor">Valor</a>
+        <a href="#modulos">Módulos</a>
+        <a href="#sistema">Demo sistema</a>
+        <a href="#citas" class="nav-cta">Reservar cita</a>
+      </div>
+    </nav>
+
+    <div class="hero">
+      <div class="hero-content">
+        <div class="badge">Sistema digital para centros terapéuticos</div>
+        <h1>Gestión clínica moderna para una atención más <span>ordenada, rápida y profesional.</span></h1>
+        <p>
+          Una plataforma integral para administrar citas, pacientes, terapias, recordatorios y seguimiento clínico desde un solo lugar. Diseñada para mejorar la experiencia del paciente y optimizar el trabajo del equipo administrativo y terapéutico.
+        </p>
+
+        <div class="hero-buttons">
+          <a href="#citas" class="btn-primary">Solicitar cita por WhatsApp</a>
+          <a href="#sistema" class="btn-secondary">Ver demo del sistema</a>
+        </div>
+
+        <div class="trust-row">
+          <span>Reservas por WhatsApp</span>
+          <span>Dashboard administrativo</span>
+          <span>Historial terapéutico</span>
+        </div>
+      </div>
+
+      <div class="hero-visual">
+        <div class="product-window">
+          <div class="window-bar">
+            <div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+            <div class="window-title">ENACE Clinical Management Platform</div>
+          </div>
+
+          <div class="product-body">
+            <aside class="sidebar">
+              <div class="side-title">Menú principal</div>
+              <div class="side-item active">Dashboard</div>
+              <div class="side-item">Citas</div>
+              <div class="side-item">Pacientes</div>
+              <div class="side-item">Terapias</div>
+              <div class="side-item">Reportes</div>
+              <div class="side-item">Configuración</div>
+            </aside>
+
+            <main class="main-panel">
+              <div class="panel-head">
+                <div>
+                  <h3>Panel de atención</h3>
+                  <p>Resumen operativo del día</p>
+                </div>
+                <span class="live-pill">En línea</span>
+              </div>
+
+              <div class="kpi-grid">
+                <div class="kpi"><p>Citas hoy</p><h2>28</h2><small>+12%</small></div>
+                <div class="kpi"><p>Pacientes activos</p><h2>186</h2><small>+8%</small></div>
+                <div class="kpi"><p>Recordatorios</p><h2>143</h2><small>Automático</small></div>
+              </div>
+
+              <div class="table-card">
+                <h4>Próximas citas</h4>
+                <div class="row"><strong>Mateo Rojas</strong><span>Psicología</span><span>10:00 AM</span><div class="status green">Confirmado</div></div>
+                <div class="row"><strong>Luciana Torres</strong><span>Lenguaje</span><span>11:30 AM</span><div class="status orange">Pendiente</div></div>
+                <div class="row"><strong>Valentina Ruiz</strong><span>Terapia ocupacional</span><span>03:00 PM</span><div class="status blue">En proceso</div></div>
+              </div>
+            </main>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <section id="valor">
+    <div class="section-title">
+      <div class="eyebrow">Propuesta de valor</div>
+      <h2>Más que una página web: una solución operativa para el policlínico</h2>
+      <p>
+        La plataforma está pensada para que el centro pueda captar pacientes, ordenar sus citas y mejorar el seguimiento de cada tratamiento.
+      </p>
+    </div>
+
+    <div class="value-grid">
+      <div class="value-card">
+        <div class="icon">01</div>
+        <h3>Captación de pacientes</h3>
+        <p>Una página profesional que presenta servicios, genera confianza y permite reservar citas directamente desde WhatsApp.</p>
+      </div>
+
+      <div class="value-card">
+        <div class="icon">02</div>
+        <h3>Gestión centralizada</h3>
+        <p>Recepción y administración pueden visualizar citas, pacientes, horarios, estados y solicitudes en un solo panel.</p>
+      </div>
+
+      <div class="value-card">
+        <div class="icon">03</div>
+        <h3>Seguimiento terapéutico</h3>
+        <p>El equipo puede registrar avances, observaciones y sesiones para mantener trazabilidad del proceso terapéutico.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="enterprise" id="modulos">
+    <div class="section-title">
+      <div class="eyebrow">Módulos del sistema</div>
+      <h2>Una plataforma preparada para crecer con el centro</h2>
+      <p>Diseño modular para implementar primero lo esencial y luego escalar hacia funciones más avanzadas.</p>
+    </div>
+
+    <div class="module-grid">
+      <div class="module"><h3>Agenda médica</h3><p>Control de horarios, citas por especialidad, estados de atención y disponibilidad del equipo.</p></div>
+      <div class="module"><h3>Pacientes</h3><p>Registro de datos, contacto, paciente responsable, servicio requerido y observaciones generales.</p></div>
+      <div class="module"><h3>Terapias</h3><p>Seguimiento de sesiones, evolución, notas internas y trazabilidad del proceso terapéutico.</p></div>
+      <div class="module"><h3>WhatsApp</h3><p>Envío de solicitudes, confirmaciones y recordatorios para reducir ausencias y mejorar comunicación.</p></div>
+      <div class="module"><h3>Reportes</h3><p>Indicadores de citas, pacientes atendidos, servicios más solicitados y productividad del equipo.</p></div>
+      <div class="module"><h3>Usuarios</h3><p>Acceso diferenciado para recepción, especialistas, administración y dirección del policlínico.</p></div>
+      <div class="module"><h3>Documentos</h3><p>Espacio para adjuntar informes, evaluaciones, consentimientos o archivos importantes del paciente.</p></div>
+      <div class="module"><h3>Configuración</h3><p>Personalización de servicios, horarios, profesionales, mensajes y datos institucionales.</p></div>
+    </div>
+  </section>
+
+  <section id="sistema">
+    <div class="section-title">
+      <div class="eyebrow">Demo administrativa</div>
+      <h2>Vista profesional para dirección, recepción y terapeutas</h2>
+      <p>El sistema puede presentarse como una herramienta interna para controlar la operación diaria del policlínico.</p>
+    </div>
+
+    <div class="system-showcase">
+      <div class="feature-list">
+        <div class="feature-item"><div class="feature-number">1</div><div><h3>Recepción ordenada</h3><p>Las solicitudes de cita llegan con datos completos: paciente, servicio, fecha, hora y comentario.</p></div></div>
+        <div class="feature-item"><div class="feature-number">2</div><div><h3>Control de estados</h3><p>Cada cita puede pasar por estados como pendiente, confirmada, atendida, reprogramada o cancelada.</p></div></div>
+        <div class="feature-item"><div class="feature-number">3</div><div><h3>Historial por paciente</h3><p>Permite revisar atenciones anteriores, notas terapéuticas y evolución del tratamiento.</p></div></div>
+        <div class="feature-item"><div class="feature-number">4</div><div><h3>Indicadores para gestión</h3><p>La administración puede tomar decisiones con datos reales de atención y demanda de servicios.</p></div></div>
+      </div>
+
+      <div class="large-dashboard">
+        <div class="window-bar">
+          <div class="dots"><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+          <div class="window-title">Panel ejecutivo</div>
+        </div>
+        <div class="main-panel">
+          <div class="panel-head">
+            <div><h3>Resumen mensual</h3><p>Indicadores de productividad clínica</p></div>
+            <span class="live-pill">Actualizado</span>
+          </div>
+          <div class="kpi-grid">
+            <div class="kpi"><p>Atenciones</p><h2>412</h2><small>Mes actual</small></div>
+            <div class="kpi"><p>Confirmación</p><h2>87%</h2><small>WhatsApp</small></div>
+            <div class="kpi"><p>Servicios top</p><h2>4</h2><small>Alta demanda</small></div>
+          </div>
+          <div class="chart-placeholder">
+            <div class="bar" style="height:45%"></div>
+            <div class="bar" style="height:70%"></div>
+            <div class="bar" style="height:58%"></div>
+            <div class="bar" style="height:85%"></div>
+            <div class="bar" style="height:65%"></div>
+            <div class="bar" style="height:92%"></div>
+            <div class="bar" style="height:76%"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="process">
+    <div class="section-title">
+      <div class="eyebrow">Flujo de atención</div>
+      <h2>De la reserva al seguimiento terapéutico</h2>
+      <p>Un proceso claro para mejorar la experiencia del paciente y reducir trabajo manual administrativo.</p>
+    </div>
+
+    <div class="timeline">
+      <div class="step"><b>1</b><h3>Solicitud</h3><p>El paciente completa el formulario y envía su reserva por WhatsApp.</p></div>
+      <div class="step"><b>2</b><h3>Confirmación</h3><p>Recepción valida disponibilidad y confirma la atención.</p></div>
+      <div class="step"><b>3</b><h3>Atención</h3><p>El especialista realiza la consulta o terapia programada.</p></div>
+      <div class="step"><b>4</b><h3>Registro</h3><p>Se guardan observaciones, avances y recomendaciones.</p></div>
+      <div class="step"><b>5</b><h3>Seguimiento</h3><p>El sistema permite continuidad del proceso terapéutico.</p></div>
+    </div>
+  </section>
+
+  <section class="appointment" id="citas">
+    <div class="section-title">
+      <div class="eyebrow">Reserva online</div>
+      <h2>Formulario conectado a WhatsApp</h2>
+      <p>El paciente completa sus datos y el sistema genera automáticamente el mensaje para el policlínico.</p>
+    </div>
+
+    <div class="form-container">
+      <div class="form-info">
+        <h3>Agenda una cita en minutos</h3>
+        <p>Este formulario puede conectarse al WhatsApp oficial del policlínico para recibir solicitudes ordenadas y listas para confirmar.</p>
+        <ul>
+          <li>Datos completos del paciente</li>
+          <li>Servicio requerido</li>
+          <li>Fecha y horario deseado</li>
+          <li>Mensaje automático por WhatsApp</li>
+        </ul>
+      </div>
+
+      <form id="appointmentForm">
+        <div><label>Nombre del apoderado/contacto</label><input type="text" id="name" placeholder="Ingresar nombre" required></div>
+        <div><label>Celular</label><input type="tel" id="phone" placeholder="999 999 999" required></div>
+        <div><label>Servicio requerido</label><select id="specialty" required><option value="">Seleccionar servicio</option><option>Psicología</option><option>Terapia ocupacional</option><option>Lenguaje y comunicación</option><option>Evaluación integral</option><option>Orientación familiar</option></select></div>
+        <div><label>Paciente</label><input type="text" id="patient" placeholder="Nombre del paciente" required></div>
+        <div><label>Fecha deseada</label><input type="date" id="date" required></div>
+        <div><label>Horario deseado</label><input type="time" id="time" required></div>
+        <div class="full"><label>Comentario adicional</label><textarea id="message" placeholder="Ej. Deseo consultar disponibilidad para una evaluación terapéutica."></textarea></div>
+        <button type="submit" class="submit-btn">Enviar solicitud por WhatsApp</button>
+      </form>
+    </div>
+  </section>
+
+  <footer>
+    <div><strong>POLICLÍNICO ENACE</strong><br>Plataforma demo de gestión clínica y terapéutica</div>
+    <div>Desarrollado por <strong>SLFE Enterprise</strong></div>
+  </footer>
+
+  <script>
+    const whatsappNumber = '51999999999';
+
+    document.getElementById('appointmentForm').addEventListener('submit', function(event) {
+      event.preventDefault();
+
+      const name = document.getElementById('name').value;
+      const phone = document.getElementById('phone').value;
+      const specialty = document.getElementById('specialty').value;
+      const patient = document.getElementById('patient').value;
+      const date = document.getElementById('date').value;
+      const time = document.getElementById('time').value;
+      const message = document.getElementById('message').value;
+
+      const text = `Hola, deseo reservar una cita en Policlínico ENACE.%0A%0A` +
+        `Nombre del apoderado/contacto: ${name}%0A` +
+        `Celular: ${phone}%0A` +
+        `Paciente: ${patient}%0A` +
+        `Servicio requerido: ${specialty}%0A` +
+        `Fecha deseada: ${date}%0A` +
+        `Hora deseada: ${time}%0A` +
+        `Comentario: ${message || 'Sin comentario adicional'}%0A%0A` +
+        `Quedo atento/a a la confirmación. Gracias.`;
+
+      window.open(`https://wa.me/${whatsappNumber}?text=${text}`, '_blank');
+    });
+  </script>
+</body>
+</html>
