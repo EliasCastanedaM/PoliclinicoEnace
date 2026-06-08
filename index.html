@@ -1,1140 +1,1198 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Policlínico Enace | Citas por Categoría</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Policlínico Enace | Servicios Médicos</title>
 <style>
 :root{
-  --primary:#0B87C9;
-  --secondary:#35C7D4;
-  --accent:#F15B2A;
-  --bg:#F6FBFF;
-  --soft:#EAF8FD;
-  --soft2:#FFF4EE;
-  --ink:#142033;
-  --muted:#667085;
-  --line:#E6EEF6;
-  --card:#FFFFFF;
-  --hero:url('https://images.unsplash.com/photo-1586773860418-d37222d8fce3?auto=format&fit=crop&w=1800&q=85');
-  --texture:url('https://images.unsplash.com/photo-1584982751601-97dcc096659c?auto=format&fit=crop&w=1800&q=85');
-  --shadow:0 24px 70px rgba(20,32,51,.13);
-  --shadow2:0 14px 34px rgba(20,32,51,.08);
-  --ring:0 0 0 4px color-mix(in srgb,var(--primary) 13%, transparent);
+  --blue:#159fe3;
+  --blue2:#5f63f2;
+  --yellow:#ffe500;
+  --dark:#34465c;
+  --text:#263748;
+  --muted:#6b7785;
+  --light:#eef4f8;
+  --line:#d9e7f2;
+  --white:#fff;
+  --red:#ed1c24;
+  --green:#00a987;
+  --primary:#159fe3;
+  --secondary:#5f63f2;
+  --hero:url('https://images.unsplash.com/photo-1586773860418-d37222d8fce3?auto=format&fit=crop&w=1900&q=85');
 }
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
-body{
-  margin:0;
-  font-family:Inter,Arial,sans-serif;
-  color:var(--ink);
-  background:
-    radial-gradient(circle at 8% 6%, color-mix(in srgb,var(--primary) 15%, transparent), transparent 30%),
-    radial-gradient(circle at 92% 8%, color-mix(in srgb,var(--secondary) 18%, transparent), transparent 28%),
-    radial-gradient(circle at 70% 92%, color-mix(in srgb,var(--accent) 12%, transparent), transparent 30%),
-    linear-gradient(180deg,var(--bg) 0%, #FFFFFF 50%, color-mix(in srgb,var(--soft) 56%, #fff) 100%);
-}
+body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--text);background:#fff;font-size:14px}
 a{text-decoration:none;color:inherit}
 button,input,select,textarea{font-family:inherit}
-.shell{width:min(1210px,calc(100% - 40px));margin:auto}
+.shell{width:min(1180px,calc(100% - 36px));margin:auto}
 
-.topbar{
-  position:sticky;top:0;z-index:50;
-  background:rgba(255,255,255,.86);
-  backdrop-filter:blur(20px);
-  border-bottom:1px solid rgba(230,238,246,.9);
-}
-.nav{
-  min-height:86px;
-  display:grid;
-  grid-template-columns:1fr auto 1fr;
-  gap:0;
-  align-items:center;
-}
-.nav-side{
-  display:flex;
-  gap:0;
-  flex-wrap:nowrap;
-  align-items:center;
-}
-.nav-right{justify-content:flex-end}
-.brand{
-  border:3px solid color-mix(in srgb,var(--primary) 80%, white);
-  background:#fff;
-  border-radius:18px;
-  padding:10px 22px;
-  min-height:58px;
-  display:flex;
-  align-items:center;
-  gap:12px;
-  box-shadow:0 14px 34px rgba(20,32,51,.10);
-  cursor:pointer;
-  transition:.18s;
-  white-space:nowrap;
-  margin:0 -2px;
-  z-index:3;
-}
-.brand:hover,.cat:hover,.btn:hover{transform:translateY(-2px)}
-.logo{
-  width:42px;height:42px;border-radius:14px;
-  display:grid;place-items:center;color:white;font-weight:950;
-  background:
-    radial-gradient(circle at 25% 20%, rgba(255,255,255,.55), transparent 24%),
-    linear-gradient(135deg,var(--primary),var(--secondary));
-  box-shadow:0 12px 24px color-mix(in srgb,var(--primary) 26%, transparent);
-}
-.brand strong{display:block;font-size:14.5px}
-.brand span{display:block;font-size:11.5px;color:var(--muted);margin-top:3px}
-.cat{
-  --catColor:#0B87C9;
-  min-height:48px;
-  min-width:148px;
-  border:5px solid var(--catColor);
-  background:#fff;
-  padding:9px 18px;
-  border-radius:16px 16px 0 0;
-  color:color-mix(in srgb,var(--catColor) 78%, #111827);
-  font-weight:950;
-  font-size:12.5px;
-  cursor:pointer;
-  transition:.18s;
-  margin-right:-5px;
-  text-align:center;
-  box-shadow:0 8px 18px rgba(20,32,51,.05);
-}
-.cat:hover{
-  background:color-mix(in srgb,var(--catColor) 7%, white);
-  box-shadow:0 12px 22px rgba(20,32,51,.08);
-}
-.cat.active{
-  color:#fff;
-  background:linear-gradient(135deg,var(--catColor),color-mix(in srgb,var(--catColor) 52%, white));
-  box-shadow:0 14px 30px color-mix(in srgb,var(--catColor) 22%, transparent);
-}
-.admin-link{
-  --loginColor:#7CC7D9;
-  min-height:42px;
-  border:4px solid var(--loginColor);
-  background:#fff;
-  color:#D79B00;
-  font-weight:950;
-  cursor:pointer;
-  padding:8px 14px;
-  border-radius:16px 16px 0 0;
-  margin-left:-4px;
-}
-.admin-link:hover{
-  background:color-mix(in srgb,var(--loginColor) 10%, white);
-  box-shadow:0 8px 20px rgba(20,32,51,.06);
-}
+/* EMERLIFE-LIKE TOP */
+.top-info{height:48px;background:linear-gradient(90deg,#615cf0 0%,#159fe3 55%,#11a7df 100%);color:#fff}
+.top-info .shell{height:48px;display:flex;align-items:center;justify-content:flex-end}
+.info-block{display:flex;height:48px;margin-left:auto}
+.info-item{display:flex;align-items:center;gap:10px;padding:0 22px;border-left:1px solid rgba(255,255,255,.35);font-size:16px;font-weight:600}
+.info-item.logo-lab{font-style:italic;font-weight:900;color:#003d60;text-shadow:1px 1px 0 #ffe500}
+.info-item.social{width:62px;justify-content:center;font-size:22px;padding:0}
 
-.btn{
-  border:0;
-  cursor:pointer;
-  border-radius:999px;
-  padding:13px 18px;
-  font-weight:950;
-  display:inline-flex;
-  align-items:center;
-  justify-content:center;
-  gap:8px;
-  transition:.18s;
-}
-.btn-primary{
-  color:white;
-  background:linear-gradient(135deg,var(--primary),var(--secondary));
-  box-shadow:0 16px 34px color-mix(in srgb,var(--primary) 24%, transparent);
-}
-.btn-soft{
-  color:color-mix(in srgb,var(--primary) 88%, #123);
-  background:linear-gradient(180deg,color-mix(in srgb,var(--primary) 9%, white),#fff);
-  border:1px solid color-mix(in srgb,var(--primary) 18%, white);
-}
-.btn-accent{
-  color:white;
-  background:linear-gradient(135deg,var(--accent),color-mix(in srgb,var(--accent) 55%, #ffc86a));
-  box-shadow:0 12px 25px color-mix(in srgb,var(--accent) 19%, transparent);
-}
-.btn-danger{color:#b42318;background:#fef3f2;border:1px solid #fecdca}
-.btn:disabled{opacity:.45;cursor:not-allowed;transform:none}
+.main-header{height:114px;background:#fff;border-bottom:1px solid #d6e1ea;box-shadow:0 2px 8px rgba(0,0,0,.04)}
+.main-header .shell{height:114px;display:flex;align-items:center;justify-content:space-between;gap:28px}
+.logo-area{display:flex;align-items:center;gap:16px;min-width:275px;border:0;background:transparent;cursor:pointer}
+.logo-cross{width:64px;height:64px;position:relative;display:grid;place-items:center}
+.logo-cross:before,.logo-cross:after{content:"";position:absolute;background:var(--red);border-radius:6px}
+.logo-cross:before{width:54px;height:22px}
+.logo-cross:after{width:22px;height:54px}
+.logo-cross span{position:relative;color:#fff;font-weight:900;font-size:20px}
+.logo-text{font-size:31px;font-weight:900;letter-spacing:-2px;color:#00a3e0;font-style:italic;text-shadow:2px 2px 0 #111}
+.logo-text b{color:#f4e400;text-shadow:2px 2px 0 #111}
+.menu{display:flex;align-items:center;justify-content:flex-end;gap:28px;flex-wrap:wrap}
+.menu button{border:0;background:transparent;font-size:15px;font-weight:500;color:#111;cursor:pointer;text-transform:uppercase;padding:12px 0;position:relative}
+.menu button:hover,.menu button.active{color:var(--primary)}
+.menu button.active:after{content:"";position:absolute;left:0;right:0;bottom:2px;height:3px;background:var(--yellow)}
+.login-btn{border:0;background:var(--yellow);color:#222;padding:10px 15px;font-weight:800;cursor:pointer}
 
-.hero{padding:44px 0 34px}
-.hero-card{
-  position:relative;
-  overflow:hidden;
-  border-radius:44px;
-  min-height:570px;
-  padding:44px;
-  background:
-    linear-gradient(90deg,rgba(255,255,255,.98),rgba(255,255,255,.90) 48%,rgba(255,255,255,.12)),
-    var(--hero);
-  background-size:cover;
-  background-position:center;
-  box-shadow:var(--shadow);
-  border:1px solid rgba(255,255,255,.90);
-}
-.hero-card:after{
-  content:"";position:absolute;inset:0;pointer-events:none;
-  background:
-    radial-gradient(circle at 16% 0%,color-mix(in srgb,var(--primary) 19%, transparent),transparent 34%),
-    radial-gradient(circle at 75% 94%,color-mix(in srgb,var(--accent) 13%, transparent),transparent 30%),
-    linear-gradient(180deg,transparent,rgba(255,255,255,.12));
-}
-.hero-content{position:relative;z-index:1;max-width:690px}
-.eyebrow{
-  display:inline-flex;
-  padding:9px 13px;
-  border-radius:999px;
-  font-size:13px;
-  font-weight:900;
-  color:color-mix(in srgb,var(--primary) 86%, #0f172a);
-  background:color-mix(in srgb,var(--primary) 10%, #fff);
-  border:1px solid color-mix(in srgb,var(--primary) 18%, #fff);
-}
-h1{font-size:58px;line-height:1.02;letter-spacing:-2px;margin:18px 0 0}
-.grad{
-  background:linear-gradient(90deg,var(--primary),var(--secondary),var(--accent));
-  -webkit-background-clip:text;background-clip:text;color:transparent;
-}
-.lead{font-size:17px;line-height:1.75;color:#526173;margin:18px 0 0}
-.hero-actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:28px}
-.stat-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:28px}
-.stat{
-  background:rgba(255,255,255,.86);
-  border:1px solid var(--line);
-  border-radius:24px;
-  padding:17px;
-  box-shadow:var(--shadow2);
-}
-.stat strong{display:block;color:var(--primary);font-size:25px}
-.stat span{display:block;color:var(--muted);font-size:12.5px;margin-top:4px}
+/* HERO */
+.hero{height:575px;position:relative;background:var(--hero) center/cover no-repeat;overflow:hidden}
+.hero-overlay{position:absolute;inset:0;width:49%;background:rgba(10,166,222,.82);clip-path:polygon(0 0,100% 0,74% 100%,0 100%)}
+.hero-content{position:relative;z-index:2;color:#fff;padding-top:112px;width:520px}
+.hero-kicker{display:flex;align-items:center;gap:12px;font-size:22px;font-weight:900;text-transform:uppercase;margin-bottom:26px}
+.hero-kicker span{font-size:34px;color:var(--yellow)}
+.hero h1{font-size:62px;font-weight:300;letter-spacing:2px;margin:0 0 22px;text-transform:uppercase}
+.hero p{font-size:20px;line-height:1.45;margin:0 0 28px;font-weight:600}
+.hero-arrows{position:absolute;right:24px;bottom:0;display:flex;z-index:3}
+.hero-arrows button{width:58px;height:58px;border:1px solid rgba(255,255,255,.6);background:#ff1d25;color:#fff;font-size:38px;cursor:pointer}
 
-section{padding:42px 0}
-.section-head{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;margin-bottom:20px}
-.section-head h2{margin:0;font-size:38px;letter-spacing:-1.2px}
-.section-head p{margin:9px 0 0;color:var(--muted);line-height:1.65;max-width:760px}
+/* WELCOME */
+.welcome{background:#edf3f7;position:relative;padding:50px 0 64px;overflow:hidden}
+.welcome:before,.news:before{content:"";position:absolute;inset:0;opacity:.22;background-image:url("data:image/svg+xml,%3Csvg width='260' height='160' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' stroke='%23ffffff' stroke-width='5' opacity='.9'%3E%3Cpath d='M40 40h55l28 48-28 48H40L12 88z'/%3E%3Cpath d='M150 10h55l28 48-28 48h-55l-28-48z'/%3E%3C/g%3E%3Cpath d='M80 76h18v-18h20v18h18v20h-18v18H98V96H80z' fill='%23fff' opacity='.7'/%3E%3C/svg%3E");background-size:360px 220px}
+.section-title{text-align:center;position:relative;z-index:1;margin-bottom:34px}
+.section-title small{display:block;color:#44576b;font-weight:900;text-transform:uppercase;font-size:11px;margin-bottom:8px}
+.section-title h2{margin:0;color:#44576b;font-size:28px;font-weight:900;text-transform:uppercase}
+.section-title p{margin:12px auto 0;max-width:760px;color:#334;line-height:1.5;font-size:13px}
+.welcome-cards{position:relative;z-index:1;display:grid;grid-template-columns:repeat(3,1fr);gap:42px;max-width:780px;margin:auto}
+.welcome-card{background:#fff;border:2px solid var(--blue);padding:52px 20px 20px;min-height:185px;position:relative}
+.card-icon{position:absolute;top:-29px;left:50%;transform:translateX(-50%);width:58px;height:58px;border-radius:50%;border:3px solid var(--blue);background:#fff;display:grid;place-items:center;color:var(--blue);font-size:24px}
+.welcome-card h3{text-transform:uppercase;color:#52657b;font-size:14px;margin:0 0 14px;font-weight:900}
+.welcome-card p{font-size:12.5px;color:#4c5b68;line-height:1.55;margin:0 0 14px}
+.yellow-btn{background:var(--yellow);border:0;color:#111;padding:9px 14px;font-size:12px;cursor:pointer;font-weight:700}
 
-.info-grid{display:grid;grid-template-columns:1fr 370px;gap:20px;align-items:stretch}
-.photo-panel{
-  min-height:430px;
-  border-radius:36px;
-  overflow:hidden;
-  position:relative;
-  background:
-    linear-gradient(180deg,rgba(0,0,0,.03),rgba(0,0,0,.64)),
-    var(--texture);
-  background-size:cover;
-  background-position:center;
-  box-shadow:var(--shadow);
-  border:1px solid rgba(255,255,255,.85);
-}
-.photo-panel:after{
-  content:"";position:absolute;inset:0;
-  background:radial-gradient(circle at 10% 10%,color-mix(in srgb,var(--secondary) 32%, transparent),transparent 30%);
-}
-.photo-content{position:absolute;left:28px;right:28px;bottom:26px;z-index:1;color:white}
-.photo-content h3{font-size:34px;margin:0 0 10px;letter-spacing:-1px}
-.photo-content p{margin:0;line-height:1.65;color:rgba(255,255,255,.88)}
-.chips{display:flex;gap:9px;flex-wrap:wrap;margin-top:17px}
-.chip{
-  border:1px solid rgba(255,255,255,.28);
-  background:rgba(255,255,255,.18);
-  backdrop-filter:blur(10px);
-  color:white;
-  border-radius:999px;
-  padding:8px 11px;
-  font-size:12px;
-  font-weight:900;
-}
-.side{display:grid;gap:14px}
-.card,.review,.contact-card,.admin-card{
-  background:white;
-  border:1px solid var(--line);
-  border-radius:28px;
-  padding:21px;
-  box-shadow:var(--shadow2);
-}
-.card h3,.review h3,.contact-card h3{margin:0 0 8px}
-.card p,.review p,.contact-card p{margin:0;color:var(--muted);line-height:1.6;font-size:14px}
+/* SERVICES */
+.services{padding:64px 0 80px;background:#fff}
+.service-feature{display:grid;grid-template-columns:1fr 380px;gap:28px;margin-bottom:38px}
+.feature-img{height:420px;background:linear-gradient(180deg,rgba(0,0,0,0),rgba(0,0,0,.55)),var(--hero) center/cover no-repeat;position:relative}
+.feature-text{position:absolute;left:28px;right:28px;bottom:25px;color:#fff}
+.feature-text h3{font-size:28px;margin:0 0 10px;text-transform:uppercase}
+.feature-text p{line-height:1.55;margin:0}
+.side-card{border:2px solid var(--blue);padding:22px;background:#fff;margin-bottom:18px}
+.side-card h3{margin:0 0 10px;color:#44576b;text-transform:uppercase;font-size:16px}
+.side-card p{color:#5d6b78;line-height:1.55;font-size:13px;margin:0}
+.carousel-wrap{display:grid;grid-template-columns:auto 1fr auto;gap:12px;align-items:center}
+.carousel{display:flex;gap:26px;overflow-x:auto;scroll-behavior:smooth;padding:8px 0 20px}
+.carousel::-webkit-scrollbar{height:8px}.carousel::-webkit-scrollbar-thumb{background:#b7d8ee;border-radius:999px}
+.service-card{flex:0 0 290px;background:#12a9e6;color:#fff;min-height:168px;padding:22px;position:relative;overflow:hidden}
+.service-card:after{content:"";position:absolute;right:-40px;bottom:-40px;width:150px;height:150px;border:2px solid rgba(255,255,255,.25);border-radius:40px;transform:rotate(30deg)}
+.service-card h3{font-size:16px;margin:0 0 10px;color:#fff}
+.service-card p{font-size:13px;line-height:1.45;margin:0 0 16px;color:#fff}
+.carousel-btn{width:42px;height:42px;border:0;background:var(--blue);color:#fff;font-size:28px;cursor:pointer}
 
-.service-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
-.service-card{
-  background:white;
-  border:1px solid var(--line);
-  border-radius:26px;
-  padding:19px;
-  box-shadow:var(--shadow2);
-  min-height:140px;
-}
-.icon{
-  width:44px;height:44px;border-radius:16px;
-  display:grid;place-items:center;color:white;font-weight:950;
-  background:linear-gradient(135deg,var(--primary),var(--secondary));
-  margin-bottom:12px;
-}
-.service-card strong{display:block;margin-bottom:6px}
-.service-card span{color:var(--muted);font-size:13px;line-height:1.45}
+/* GALLERY / NEWS */
+.gallery{background:#edf3f7;padding:64px 0}
+.gallery-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:56px}
+.gallery-card{background:#fff;box-shadow:0 8px 20px rgba(0,0,0,.08)}
+.gallery-card img{width:100%;height:190px;object-fit:cover;display:block}
+.gallery-body{padding:14px}.gallery-body small{color:#6b7785}.gallery-body h3{font-size:13px;color:#44576b;margin:7px 0 12px}
+.news{position:relative;background:linear-gradient(115deg,#12a9e6,#5f63f2);padding:70px 0;color:#fff;overflow:hidden}
+.news .shell{position:relative;z-index:1;display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:center}
+.news h2{font-size:28px;text-transform:uppercase;margin:0 0 12px}
+.news p{line-height:1.55;margin:0 0 18px;color:#fff}
 
-.reviews-grid,.contact-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:15px}
-.stars{color:#f79009;letter-spacing:2px;font-size:14px;margin-bottom:8px}
-.person{display:flex;align-items:center;gap:10px;margin-top:15px;font-size:13px;font-weight:900;color:#344054}
-.avatar{
-  width:38px;height:38px;border-radius:50%;
-  display:grid;place-items:center;color:white;
-  background:linear-gradient(135deg,var(--primary),var(--secondary));
-  font-weight:950;
-}
+/* CONTACT */
+.contact{display:grid;grid-template-columns:1fr 1fr}
+.map{min-height:390px;background:url('https://images.unsplash.com/photo-1524661135-423995f22d0b?auto=format&fit=crop&w=1100&q=80') center/cover no-repeat}
+.contact-form{background:#edf3f7;padding:52px}
+.contact-form h2{color:#44576b;margin:0 0 10px}
+.contact-form p{color:#5d6b78;margin:0 0 24px}
+.contact-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+input,select,textarea{width:100%;border:2px solid var(--blue);padding:12px;background:#fff;outline:none}
+textarea{min-height:105px;resize:vertical}.full{grid-column:1/-1}
 
-.booking-section{
-  padding:56px 0 70px;
-  background:
-    linear-gradient(180deg, transparent 0%, color-mix(in srgb,var(--soft) 65%, #fff) 100%);
-}
-.booking-wrap{
-  display:grid;
-  grid-template-columns:1fr 405px;
-  gap:22px;
-  align-items:start;
-}
-.booking-form,.summary{
-  background:white;
-  border:1px solid var(--line);
-  border-radius:36px;
-  box-shadow:var(--shadow);
-}
-.booking-form{
-  padding:0;
-  overflow:hidden;
-}
-.form-header{
-  padding:26px 28px;
-  background:
-    radial-gradient(circle at 0% 0%, color-mix(in srgb,var(--primary) 15%, transparent), transparent 34%),
-    linear-gradient(135deg, color-mix(in srgb,var(--soft) 70%, #fff), #fff);
-  border-bottom:1px solid var(--line);
-}
-.form-header .small{
-  display:inline-flex;
-  padding:8px 12px;
-  border-radius:999px;
-  background:white;
-  color:var(--primary);
-  border:1px solid color-mix(in srgb,var(--primary) 18%, white);
-  font-size:12px;
-  font-weight:950;
-}
-.form-header h3{
-  margin:12px 0 6px;
-  font-size:28px;
-  letter-spacing:-.7px;
-}
-.form-header p{
-  margin:0;
-  color:var(--muted);
-  line-height:1.6;
-}
-.form-body{padding:24px 28px 28px}
-.form-section{
-  margin-top:20px;
-  padding-top:20px;
-  border-top:1px solid var(--line);
-}
-.form-section:first-of-type{margin-top:0;padding-top:0;border-top:0}
-.form-section-title{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  margin-bottom:14px;
-  color:#1d2939;
-  font-weight:950;
-}
-.step-badge{
-  width:32px;height:32px;
-  border-radius:12px;
-  display:grid;place-items:center;
-  background:linear-gradient(135deg,var(--primary),var(--secondary));
-  color:white;
-  font-size:13px;
-  box-shadow:0 10px 20px color-mix(in srgb,var(--primary) 20%, transparent);
-}
-.form-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
-.current-category-box{
-  display:flex;
-  align-items:center;
-  justify-content:space-between;
-  gap:14px;
-  width:100%;
-  min-height:74px;
-  padding:15px 16px;
-  border:1px solid color-mix(in srgb,var(--primary) 18%, white);
-  background:
-    radial-gradient(circle at 0% 0%, color-mix(in srgb,var(--primary) 13%, transparent), transparent 38%),
-    linear-gradient(135deg, color-mix(in srgb,var(--soft) 80%, white), #fff);
-  border-radius:22px;
-}
-.category-display-left{
-  display:flex;
-  align-items:center;
-  gap:12px;
-}
-.category-dot{
-  width:42px;
-  height:42px;
-  border-radius:16px;
-  display:grid;
-  place-items:center;
-  color:#fff;
-  font-weight:950;
-  background:linear-gradient(135deg,var(--primary),var(--secondary));
-  box-shadow:0 10px 22px color-mix(in srgb,var(--primary) 22%, transparent);
-}
-.category-display-title strong{
-  display:block;
-  font-size:15px;
-  color:#1d2939;
-}
-.category-display-title span{
-  display:block;
-  color:var(--muted);
-  font-size:12.5px;
-  margin-top:3px;
-}
-.category-display-badge{
-  padding:8px 11px;
-  border-radius:999px;
-  color:var(--primary);
-  background:#fff;
-  border:1px solid color-mix(in srgb,var(--primary) 18%, white);
-  font-size:12px;
-  font-weight:950;
-  white-space:nowrap;
-}
+/* BOOKING */
+.booking{padding:70px 0;background:#fff}
+.booking-wrap{display:grid;grid-template-columns:1fr 380px;gap:28px;align-items:start}
+.booking-form,.summary{border:2px solid var(--blue);background:#fff}
+.form-head{background:#edf3f7;padding:22px;border-bottom:2px solid var(--blue)}
+.form-head h3{margin:0 0 8px;color:#44576b;text-transform:uppercase}
+.form-head p{margin:0;color:#5d6b78}
+.form-body{padding:22px}
+.form-section{border-top:1px solid #d8e8f3;margin-top:20px;padding-top:20px}.form-section:first-child{border-top:0;margin-top:0;padding-top:0}
+.form-title{font-weight:900;color:#44576b;margin-bottom:14px;text-transform:uppercase}
+.form-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+label{display:block;font-weight:800;font-size:12px;color:#44576b;margin-bottom:6px}
+.category-box{display:flex;gap:12px;align-items:center;justify-content:space-between;border:2px solid var(--blue);padding:12px;background:#f7fbfd}
+.category-dot{width:42px;height:42px;border-radius:50%;background:var(--blue);color:#fff;display:grid;place-items:center;font-weight:900}
+.category-title strong{display:block;color:#44576b}.category-title span{display:block;color:#6b7785;font-size:12px}
 #categorySelect{display:none}
+.slots{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
+.slot{border:1px solid #c8dcea;background:#fff;padding:10px 6px;text-align:center;font-size:12px;font-weight:800;cursor:pointer}
+.slot:hover,.slot.selected{background:var(--blue);color:#fff}.slot.booked{background:#eee;color:#999;text-decoration:line-through;cursor:not-allowed}.slot.past{opacity:.4}
+.summary{position:sticky;top:112px;padding:22px}.summary h2{margin:0 0 8px;color:#44576b;text-transform:uppercase}.summary p{color:#6b7785}
+.summary-line{display:flex;justify-content:space-between;gap:12px;border-bottom:1px solid #d8e8f3;padding:11px 0;color:#6b7785;font-size:13px}.summary-line strong{color:#263748;text-align:right}
+.total{display:flex;justify-content:space-between;margin:18px 0;font-size:18px}.total strong{color:var(--blue);font-size:26px}
+.payment-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.pay{border:1px solid #c8dcea;padding:10px 6px;text-align:center;font-size:12px;font-weight:800;cursor:pointer}.pay.active{background:var(--blue);color:#fff}
+.notice{padding:12px;background:#f7fbfd;border:1px solid #d8e8f3;color:#667085;font-size:13px;margin:12px 0}.notice.success{background:#ecfdf3;color:#067647}.notice.error{background:#fef3f2;color:#b42318}.hidden{display:none!important}
 
-.field.full{grid-column:1/-1}
-label{display:block;margin-bottom:7px;color:#344054;font-size:13px;font-weight:900}
-input,select,textarea{
-  width:100%;
-  border:1px solid #dce7f0;
+/* ADMIN */
+.admin-view{display:none}.login{max-width:520px;margin:48px auto}.admin-card,.dash{background:#fff;border:2px solid var(--blue);padding:22px}
+.dashboard{display:none}.dash-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:18px}.dash span{color:#667085}.dash strong{display:block;color:var(--blue);font-size:26px;margin-top:6px}
+.filters{display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:12px;align-items:end;margin:16px 0}.table-wrap{overflow:auto}
+table{width:100%;min-width:1050px;border-collapse:collapse;background:#fff}th,td{padding:12px;border:1px solid #d8e8f3;text-align:left;font-size:13px}th{background:#edf3f7;color:#44576b;text-transform:uppercase}.status{padding:5px 9px;border-radius:999px;font-size:11px;font-weight:900}.paid{background:#ecfdf3;color:#067647}.cancelled{background:#fef3f2;color:#b42318}
+.timeline{display:grid;gap:9px}.time-row{display:grid;grid-template-columns:70px 1fr 35px;align-items:center;gap:10px}.bar-wrap{height:12px;background:#edf3f7}.bar{height:100%;background:var(--blue)}
+.modal{position:fixed;inset:0;z-index:100;display:none;place-items:center;background:rgba(0,0,0,.4);padding:20px}.modal.show{display:grid}.modal-card{width:min(540px,100%);background:#fff;padding:28px}.receipt{background:#edf3f7;padding:14px;line-height:1.7;margin:14px 0}
+.footer{background:linear-gradient(115deg,#12a9e6,#5f63f2);color:#fff;padding:34px 0}.footer-grid{display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:24px}.footer p{color:#fff;line-height:1.55}
+
+@media(max-width:980px){
+ .main-header{height:auto}.main-header .shell{height:auto;flex-direction:column;padding:16px 0}.top-info{height:auto}.top-info .shell{height:auto;padding:10px 0}.info-block{height:auto;flex-wrap:wrap}.info-item{height:38px}.hero-overlay{width:75%;clip-path:none}.welcome-cards,.gallery-grid,.dash-grid{grid-template-columns:1fr 1fr}.service-feature,.booking-wrap,.contact,.news .shell{grid-template-columns:1fr}.summary{position:static}.filters{grid-template-columns:1fr 1fr}
+}
+@media(max-width:650px){
+ .shell{width:min(100% - 26px,1180px)}.hero h1{font-size:38px}.hero-content{width:auto}.welcome-cards,.gallery-grid,.form-grid,.contact-grid,.dash-grid,.filters,.footer-grid{grid-template-columns:1fr}.slots{grid-template-columns:repeat(3,1fr)}.payment-grid{grid-template-columns:1fr}.menu{gap:10px}.menu button{font-size:12px}.contact-form{padding:30px}
+}
+
+/* =========================================================
+   DISEÑO FINAL DIFERENCIADO:
+   Inspirado en una web médica corporativa, pero no copia literal
+   ========================================================= */
+:root{
+  --blue:#087FC1;
+  --blue2:#3F7EE8;
+  --yellow:#FFD91A;
+  --dark:#24435D;
+  --text:#263748;
+  --muted:#6B7785;
+  --light:#F1F7FB;
+  --line:#DCEAF3;
+  --red:#E84C3D;
+  --green:#00A987;
+  --primary:#087FC1;
+  --secondary:#00A987;
+}
+body{
   background:#fff;
-  color:#1d2939;
-  border-radius:18px;
-  padding:14px 15px;
-  outline:none;
-  transition:.16s;
-  box-shadow:0 1px 0 rgba(20,32,51,.02);
-}
-input:hover,select:hover,textarea:hover{border-color:#cbd8e4}
-input:focus,select:focus,textarea:focus{
-  border-color:color-mix(in srgb,var(--primary) 62%,#fff);
-  box-shadow:var(--ring);
-}
-textarea{min-height:96px;resize:vertical}
-.slots{display:grid;grid-template-columns:repeat(5,1fr);gap:9px}
-.slot{
-  text-align:center;
-  border-radius:16px;
-  padding:11px 8px;
-  font-weight:900;
-  font-size:12.5px;
-  border:1px solid #dce7f0;
-  background:#fff;
-  color:#344054;
-  cursor:pointer;
-  transition:.16s;
-}
-.slot:hover{transform:translateY(-1px);background:color-mix(in srgb,var(--primary) 7%, white)}
-.slot.selected{
-  color:white;
-  border-color:transparent;
-  background:linear-gradient(135deg,var(--primary),var(--secondary));
-  box-shadow:0 10px 22px color-mix(in srgb,var(--primary) 20%, transparent);
-}
-.slot.booked{color:#98a2b3;background:#f2f4f7;text-decoration:line-through;cursor:not-allowed}
-.slot.past{opacity:.36;cursor:not-allowed}
-
-.summary{
-  position:sticky;
-  top:96px;
-  padding:25px;
-  overflow:hidden;
-}
-.summary:before{
-  content:"";
-  display:block;
-  height:8px;
-  margin:-25px -25px 18px;
-  background:linear-gradient(90deg,var(--primary),var(--secondary),var(--accent));
-}
-.summary h2{margin:0 0 5px}
-.summary p{color:var(--muted);line-height:1.55;font-size:13.5px}
-.summary-line{
-  display:flex;
-  justify-content:space-between;
-  gap:10px;
-  padding:12px 0;
-  border-bottom:1px solid var(--line);
-  font-size:14px;
-  color:var(--muted);
-}
-.summary-line strong{color:#1d2939;text-align:right}
-.total{display:flex;justify-content:space-between;align-items:center;margin:18px 0}
-.total strong{font-size:32px;color:var(--primary)}
-.payment-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:10px 0}
-.pay{
-  border:1px solid #dce7f0;
-  border-radius:18px;
-  background:white;
-  padding:12px 6px;
-  text-align:center;
-  font-size:12px;
-  font-weight:950;
-  cursor:pointer;
-  transition:.16s;
-}
-.pay:hover{transform:translateY(-1px)}
-.pay.active{
-  color:var(--primary);
-  background:color-mix(in srgb,var(--primary) 8%,white);
-  border-color:color-mix(in srgb,var(--primary) 35%,white);
-}
-.notice{
-  padding:13px 14px;
-  border-radius:18px;
-  background:#f8fafc;
-  border:1px solid var(--line);
-  color:var(--muted);
-  line-height:1.45;
-  font-size:13px;
-  margin:12px 0;
-}
-.notice.success{background:#ecfdf3;border-color:#abefc6;color:#067647}
-.notice.error{background:#fef3f2;border-color:#fecdca;color:#b42318}
-.hidden{display:none!important}
-
-.admin-view{display:none}
-.login{max-width:540px;margin:46px auto}
-.dashboard{display:none}
-.dash-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:18px}
-.dash{
-  background:white;
-  border:1px solid var(--line);
-  border-radius:28px;
-  padding:20px;
-  box-shadow:var(--shadow2);
-}
-.dash span{color:var(--muted);font-size:13px}
-.dash strong{display:block;margin-top:8px;color:var(--primary);font-size:30px}
-.filters{display:grid;grid-template-columns:1fr 1fr 1fr auto;gap:12px;align-items:end;margin:16px 0}
-.table-wrap{overflow:auto}
-table{
-  width:100%;min-width:1060px;border-collapse:separate;border-spacing:0;
-  background:white;border:1px solid var(--line);border-radius:24px;overflow:hidden;
-}
-th,td{padding:13px;border-bottom:1px solid var(--line);text-align:left;font-size:13px;vertical-align:top}
-th{background:#f8fafc;color:#475467;text-transform:uppercase;letter-spacing:.5px;font-size:11px}
-tr:last-child td{border-bottom:0}
-small{color:var(--muted)}
-.status{display:inline-flex;padding:6px 10px;border-radius:999px;font-size:11px;font-weight:950}
-.paid{background:#ecfdf3;color:#067647;border:1px solid #abefc6}
-.cancelled{background:#fef3f2;color:#b42318;border:1px solid #fecdca}
-.timeline{display:grid;gap:10px;margin-top:14px}
-.time-row{display:grid;grid-template-columns:78px 1fr 40px;gap:12px;align-items:center;font-size:13px;color:#344054}
-.bar-wrap{height:14px;background:#eef2f6;border-radius:999px;overflow:hidden}
-.bar{height:100%;width:0;border-radius:999px;background:linear-gradient(90deg,var(--primary),var(--secondary))}
-.modal{
-  position:fixed;inset:0;z-index:100;display:none;place-items:center;padding:20px;
-  background:rgba(15,23,42,.35);backdrop-filter:blur(10px);
-}
-.modal.show{display:grid}
-.modal-card{
-  width:min(560px,100%);
-  background:white;
-  border-radius:34px;
-  padding:28px;
-  box-shadow:var(--shadow);
-  border:1px solid var(--line);
-}
-.receipt{
-  background:#f8fafc;
-  border:1px solid var(--line);
-  border-radius:22px;
-  padding:16px;
-  margin:14px 0;
-  line-height:1.8;
-  color:#344054;
-}
-footer{padding:30px 0 42px;color:var(--muted);border-top:1px solid var(--line);background:rgba(255,255,255,.6)}
-
-@media(max-width:1080px){
- .nav{grid-template-columns:1fr}
- .nav-side,.nav-right{justify-content:center;flex-wrap:wrap;gap:8px}
- .cat{border-radius:999px;margin-right:0;min-width:auto;border-width:3px}
- .admin-link{border-radius:999px;margin-left:0;border-width:3px}
- .brand{margin:0;border-radius:999px}
- .hero-card{min-height:auto}
- .booking-wrap,.info-grid{grid-template-columns:1fr}
- .summary{position:static}
- .service-grid{grid-template-columns:repeat(2,1fr)}
- .reviews-grid,.contact-grid,.dash-grid{grid-template-columns:repeat(2,1fr)}
- .filters{grid-template-columns:1fr 1fr}
-}
-@media(max-width:680px){
- .shell{width:min(100% - 28px,1210px)}
- h1{font-size:36px;letter-spacing:-1px}
- .hero-card{padding:26px;border-radius:28px}
- .stat-grid,.form-grid,.service-grid,.reviews-grid,.contact-grid,.dash-grid,.filters{grid-template-columns:1fr}
- .slots{grid-template-columns:repeat(3,1fr)}
- .payment-grid{grid-template-columns:1fr}
- .section-head{display:block}
- .section-head h2{font-size:30px}
- .form-header,.form-body{padding-left:20px;padding-right:20px}
 }
 
-/* NAVBAR BASE: categorías juntas + una P al medio */
-.topbar{
-  background:rgba(255,255,255,.92);
-  backdrop-filter:blur(18px);
+/* Top bar diferente: más compacto y elegante */
+.top-info{
+  height:44px;
+  background:linear-gradient(90deg,#3559D8 0%,#1099DD 52%,#13B7C7 100%);
 }
-.nav{
-  min-height:86px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:12px;
+.top-info .shell{
+  height:44px;
 }
-.category-strip{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:0;
-  flex-wrap:nowrap;
+.info-item{
+  height:44px;
+  font-size:15px;
+  padding:0 18px;
 }
-.cat{
-  --catColor:#0B87C9;
-  min-height:48px;
-  min-width:146px;
-  border:5px solid var(--catColor);
-  background:#fff;
-  padding:8px 16px;
-  border-radius:18px 18px 0 0;
-  color:color-mix(in srgb,var(--catColor) 78%, #111827);
-  font-weight:950;
-  font-size:12.5px;
-  cursor:pointer;
-  transition:.18s;
-  margin-right:-5px;
-  text-align:center;
-  box-shadow:0 8px 18px rgba(20,32,51,.05);
+.info-item.logo-lab{
+  color:#F7E640;
+  text-shadow:none;
 }
-.cat:hover{
-  transform:translateY(-2px);
-  background:color-mix(in srgb,var(--catColor) 7%, white);
-  box-shadow:0 12px 22px rgba(20,32,51,.08);
-}
-.cat.active{
-  color:#fff;
-  background:linear-gradient(135deg,var(--catColor),color-mix(in srgb,var(--catColor) 54%, white));
-  box-shadow:0 14px 30px color-mix(in srgb,var(--catColor) 22%, transparent);
-}
-.p-center{
-  width:64px;
-  min-width:64px;
-  height:64px;
-  border-radius:16px;
-  border:5px solid color-mix(in srgb,var(--primary) 80%, #344);
-  background:#fff;
-  display:grid;
-  place-items:center;
-  color:#f6bf22;
-  font-weight:950;
-  font-size:24px;
-  cursor:pointer;
-  z-index:4;
-  margin:0 -5px;
-  box-shadow:0 14px 30px rgba(20,32,51,.12);
-  transition:.18s;
-}
-.p-center:hover{
-  transform:translateY(-2px);
-  background:color-mix(in srgb,var(--primary) 7%, white);
-}
-.admin-link{
-  --loginColor:#86D3E4;
-  min-height:42px;
-  border:4px solid var(--loginColor);
-  background:#fff;
-  color:#d49a00;
-  font-weight:950;
-  cursor:pointer;
-  padding:8px 14px;
-  border-radius:16px 16px 0 0;
-  margin-left:-5px;
-}
-.admin-link:hover{
-  transform:translateY(-2px);
-  background:color-mix(in srgb,var(--loginColor) 10%, white);
-  box-shadow:0 8px 20px rgba(20,32,51,.06);
-}
-.brand,.logo,.nav-side,.nav-right{display:none!important}
-
-@media(max-width:1080px){
-  .nav{justify-content:flex-start;overflow-x:auto;padding:12px 0}
-  .category-strip{justify-content:flex-start}
-  .cat{min-width:135px;border-width:4px}
-  .p-center{width:58px;min-width:58px;height:58px;border-width:4px}
-  .admin-link{border-width:4px;min-width:86px}
-}
-@media(max-width:680px){
-  .shell{width:min(100% - 24px,1210px)}
-  .cat{min-width:122px;font-size:11.5px;padding:8px 12px}
+.info-item.social{
+  width:52px;
 }
 
-
-/* NAVBAR PREMIUM FINAL: idea del Paint, pero refinada */
-.topbar{
-  background:rgba(255,255,255,.78);
-  backdrop-filter:blur(22px);
-  border-bottom:1px solid rgba(226,232,240,.85);
-  box-shadow:0 10px 30px rgba(15,23,42,.045);
+/* Header diferente: logo propio, más limpio */
+.main-header{
+  height:106px;
 }
-.nav{
-  min-height:92px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:14px;
+.main-header .shell{
+  height:106px;
 }
-.category-strip{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:10px;
-  padding:10px 12px;
-  border-radius:999px;
-  background:rgba(255,255,255,.72);
-  border:1px solid rgba(226,232,240,.92);
-  box-shadow:
-    0 16px 42px rgba(15,23,42,.08),
-    inset 0 1px 0 rgba(255,255,255,.85);
+.logo-area{
+  min-width:295px;
 }
-.cat{
-  --catColor:#0B87C9;
-  min-height:46px;
-  min-width:138px;
-  border:0;
-  position:relative;
-  isolation:isolate;
-  overflow:hidden;
-  background:#fff;
-  padding:11px 17px 11px 18px;
-  border-radius:999px;
-  color:#263445;
-  font-weight:900;
-  font-size:12.4px;
-  cursor:pointer;
-  transition:.22s ease;
-  margin:0;
-  text-align:center;
-  box-shadow:
-    0 8px 22px rgba(15,23,42,.06),
-    inset 0 0 0 1px rgba(226,232,240,.95);
-}
-.cat:before{
-  content:"";
-  position:absolute;
-  left:9px;
-  top:50%;
-  width:9px;
-  height:9px;
-  border-radius:50%;
-  transform:translateY(-50%);
-  background:var(--catColor);
-  box-shadow:0 0 0 5px color-mix(in srgb,var(--catColor) 13%, transparent);
-}
-.cat:after{
-  content:"";
-  position:absolute;
-  inset:0;
-  z-index:-1;
-  opacity:0;
-  background:
-    radial-gradient(circle at 16% 50%, color-mix(in srgb,var(--catColor) 19%, transparent), transparent 30%),
-    linear-gradient(135deg, color-mix(in srgb,var(--catColor) 12%, white), #fff);
-  transition:.22s ease;
-}
-.cat:hover{
-  transform:translateY(-2px);
-  color:color-mix(in srgb,var(--catColor) 72%, #111827);
-  box-shadow:
-    0 14px 28px rgba(15,23,42,.10),
-    inset 0 0 0 1px color-mix(in srgb,var(--catColor) 20%, #fff);
-}
-.cat:hover:after{opacity:1}
-.cat.active{
-  color:#fff;
-  background:linear-gradient(135deg,var(--catColor),color-mix(in srgb,var(--catColor) 58%, #ffffff));
-  box-shadow:
-    0 16px 34px color-mix(in srgb,var(--catColor) 27%, transparent),
-    inset 0 0 0 1px rgba(255,255,255,.24);
-}
-.cat.active:before{
-  background:#fff;
-  box-shadow:0 0 0 5px rgba(255,255,255,.18);
-}
-.cat.active:after{opacity:0}
-
-.p-center{
+.logo-cross{
   width:62px;
-  min-width:62px;
   height:62px;
-  border-radius:22px;
-  border:0;
-  position:relative;
-  isolation:isolate;
-  display:grid;
-  place-items:center;
-  color:#fff;
-  font-weight:950;
-  font-size:25px;
-  cursor:pointer;
-  z-index:4;
-  margin:0 2px;
-  background:
-    radial-gradient(circle at 30% 20%, rgba(255,255,255,.45), transparent 23%),
-    linear-gradient(135deg,var(--primary),var(--secondary));
-  box-shadow:
-    0 18px 38px color-mix(in srgb,var(--primary) 26%, transparent),
-    inset 0 0 0 1px rgba(255,255,255,.25);
-  transition:.22s ease;
+  border-radius:18px;
+  background:linear-gradient(135deg,#EF3E4A,#FF7A59);
+  box-shadow:0 12px 26px rgba(232,76,61,.22);
 }
-.p-center:before{
-  content:"Principal";
-  position:absolute;
-  bottom:-24px;
-  left:50%;
-  transform:translateX(-50%);
-  color:#64748b;
-  font-size:10.5px;
-  letter-spacing:.2px;
-  font-weight:800;
-  opacity:.9;
-}
-.p-center:hover{
-  transform:translateY(-3px) scale(1.02);
-  box-shadow:
-    0 22px 45px color-mix(in srgb,var(--primary) 33%, transparent),
-    inset 0 0 0 1px rgba(255,255,255,.30);
-}
-
-.admin-link{
-  --loginColor:#0EA5E9;
-  min-height:46px;
-  border:0;
+.logo-cross:before,
+.logo-cross:after{
   background:#fff;
-  color:#334155;
-  font-weight:950;
-  cursor:pointer;
-  padding:11px 17px;
-  border-radius:999px;
-  margin-left:0;
-  box-shadow:
-    0 8px 22px rgba(15,23,42,.06),
-    inset 0 0 0 1px rgba(226,232,240,.95);
-  transition:.22s ease;
+  border-radius:4px;
 }
-.admin-link:hover{
-  transform:translateY(-2px);
-  color:#0f766e;
-  background:linear-gradient(135deg,#fff,color-mix(in srgb,var(--loginColor) 10%, #fff));
-  box-shadow:0 14px 28px rgba(15,23,42,.10);
+.logo-cross:before{width:40px;height:14px}
+.logo-cross:after{width:14px;height:40px}
+.logo-cross span{display:none}
+.logo-text{
+  font-size:28px;
+  letter-spacing:-1.2px;
+  font-style:normal;
+  color:#087FC1;
+  text-shadow:none;
 }
-
-@media(max-width:1080px){
-  .nav{
-    justify-content:flex-start;
-    overflow-x:auto;
-    padding:12px 0 18px;
-  }
-  .category-strip{
-    justify-content:flex-start;
-    min-width:max-content;
-  }
-  .cat{
-    min-width:128px;
-    font-size:12px;
-  }
-  .p-center{
-    width:58px;
-    min-width:58px;
-    height:58px;
-  }
-  .admin-link{
-    min-width:86px;
-  }
+.logo-text b{
+  color:#00A987;
+  text-shadow:none;
 }
-@media(max-width:680px){
-  .cat{
-    min-width:118px;
-    font-size:11.4px;
-    padding:10px 13px 10px 17px;
-  }
-  .p-center{
-    width:54px;
-    min-width:54px;
-    height:54px;
-    border-radius:19px;
-  }
-  .p-center:before{display:none}
+.menu{
+  gap:22px;
 }
-
-
-/* Carrusel de atenciones con imágenes */
-.service-grid{display:none}
-.carousel-wrap{
-  position:relative;
-  display:grid;
-  grid-template-columns:auto 1fr auto;
-  gap:12px;
-  align-items:center;
-}
-.service-carousel{
-  display:flex;
-  gap:16px;
-  overflow-x:auto;
-  scroll-behavior:smooth;
-  padding:4px 2px 18px;
-  scrollbar-width:thin;
-  scrollbar-color:color-mix(in srgb,var(--primary) 45%, #cbd5e1) transparent;
-}
-.service-carousel::-webkit-scrollbar{height:8px}
-.service-carousel::-webkit-scrollbar-thumb{
-  background:color-mix(in srgb,var(--primary) 45%, #cbd5e1);
-  border-radius:999px;
-}
-.carousel-card{
-  flex:0 0 310px;
-  min-height:390px;
-  border-radius:30px;
-  background:#fff;
-  border:1px solid var(--line);
-  overflow:hidden;
-  box-shadow:var(--shadow2);
-  transition:.22s;
-}
-.carousel-card:hover{
-  transform:translateY(-4px);
-  box-shadow:var(--shadow);
-}
-.carousel-img{
-  height:190px;
-  background-size:cover;
-  background-position:center;
-  position:relative;
-}
-.carousel-img:after{
-  content:"";
-  position:absolute;
-  inset:0;
-  background:linear-gradient(180deg,rgba(0,0,0,0),rgba(0,0,0,.28));
-}
-.carousel-number{display:none}
-.carousel-body{
-  padding:19px;
-}
-.carousel-body h3{
-  margin:0 0 8px;
-  font-size:20px;
-  letter-spacing:-.4px;
-}
-.carousel-body p{
-  margin:0;
-  color:var(--muted);
-  line-height:1.55;
+.menu button{
   font-size:14px;
+  letter-spacing:.2px;
 }
-.carousel-tag{
-  display:inline-flex;
-  margin-top:15px;
-  padding:8px 11px;
+.menu button.active:after{
+  background:var(--green);
+}
+.login-btn{
+  background:var(--green);
+  color:#fff;
   border-radius:999px;
+  padding:11px 18px;
+}
+
+/* Hero diferente: no usa la misma diagonal dura; usa panel curvo */
+.hero{
+  height:610px;
+  background:
+    linear-gradient(90deg,rgba(7,54,94,.30),rgba(7,54,94,.10)),
+    var(--hero) center/cover no-repeat;
+}
+.hero-overlay{
+  width:58%;
+  background:linear-gradient(135deg,rgba(8,127,193,.94),rgba(0,169,135,.82));
+  clip-path:ellipse(88% 88% at 0% 50%);
+}
+.hero-content{
+  padding-top:108px;
+  width:560px;
+}
+.hero-kicker{
+  font-size:20px;
+  margin-bottom:22px;
+}
+.hero-kicker span{
+  color:var(--yellow);
+}
+.hero h1{
+  font-size:56px;
+  font-weight:800;
+  letter-spacing:.4px;
+}
+.hero p{
+  font-size:19px;
+  max-width:520px;
+}
+.hero-arrows{
+  right:38px;
+  bottom:28px;
+  gap:8px;
+}
+.hero-arrows button{
+  width:54px;
+  height:54px;
+  border-radius:50%;
+  background:#fff;
   color:var(--primary);
-  background:color-mix(in srgb,var(--primary) 8%, white);
-  border:1px solid color-mix(in srgb,var(--primary) 16%, white);
-  font-size:12px;
-  font-weight:950;
+  border:0;
+  box-shadow:0 12px 30px rgba(0,0,0,.18);
+  font-size:34px;
+}
+
+/* Botones más propios */
+.yellow-btn{
+  background:var(--yellow);
+  border-radius:999px;
+  padding:10px 16px;
+  border:0;
+  color:#1d2939;
+  font-weight:900;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  width:max-content;
+}
+.btn-blue{
+  background:var(--primary);
+  border-radius:999px;
+}
+
+/* Bienvenida: tarjetas distintas, no calco */
+.welcome{
+  background:#F1F7FB;
+  padding:58px 0 70px;
+}
+.welcome:before,
+.news:before{
+  opacity:.18;
+}
+.welcome-cards{
+  max-width:980px;
+  gap:24px;
+}
+.welcome-card{
+  border:0;
+  border-top:5px solid var(--primary);
+  border-radius:18px;
+  padding:30px 24px 24px;
+  box-shadow:0 16px 38px rgba(16,24,40,.10);
+  min-height:210px;
+}
+.card-icon{
+  position:static;
+  transform:none;
+  width:54px;
+  height:54px;
+  margin-bottom:18px;
+  border:0;
+  background:linear-gradient(135deg,var(--primary),var(--secondary));
+  color:#fff;
+}
+.welcome-card h3{
+  font-size:16px;
+  color:var(--dark);
+}
+.welcome-card p{
+  font-size:13px;
+}
+
+/* Servicios: estilo más tipo clínica propia */
+.services{
+  padding:68px 0 84px;
+}
+.section-title h2{
+  color:var(--dark);
+}
+.service-feature{
+  gap:30px;
+}
+.feature-img{
+  border-radius:22px;
+  overflow:hidden;
+  box-shadow:0 18px 45px rgba(16,24,40,.13);
+}
+.feature-text h3{
+  text-transform:none;
+}
+.side-card{
+  border:0;
+  border-left:5px solid var(--secondary);
+  border-radius:16px;
+  box-shadow:0 12px 28px rgba(16,24,40,.08);
+}
+.side-card h3{
+  color:var(--dark);
+}
+
+/* Carrusel distinto */
+.service-card{
+  flex:0 0 300px;
+  background:linear-gradient(135deg,var(--primary),var(--secondary));
+  border-radius:18px;
+  min-height:178px;
+  box-shadow:0 14px 30px rgba(16,24,40,.12);
+}
+.service-card:after{
+  border-radius:50%;
+  right:-56px;
+  bottom:-56px;
 }
 .carousel-btn{
-  width:48px;
-  height:48px;
-  border:1px solid var(--line);
-  border-radius:50%;
   background:#fff;
   color:var(--primary);
-  font-size:30px;
-  line-height:1;
-  font-weight:900;
-  cursor:pointer;
-  box-shadow:var(--shadow2);
-  transition:.18s;
+  border:1px solid var(--line);
+  border-radius:50%;
+  box-shadow:0 8px 20px rgba(16,24,40,.10);
 }
-.carousel-btn:hover{
-  transform:translateY(-2px);
-  background:color-mix(in srgb,var(--primary) 7%, white);
+
+/* Galería y noticias diferenciadas */
+.gallery{
+  background:#F1F7FB;
 }
-@media(max-width:680px){
-  .carousel-wrap{grid-template-columns:1fr}
-  .carousel-btn{display:none}
-  .carousel-card{flex-basis:270px}
+.gallery-card{
+  border-radius:18px;
+  overflow:hidden;
+}
+.news{
+  background:linear-gradient(120deg,#087FC1 0%,#00A987 100%);
+}
+
+/* Contacto diferente */
+.contact-form{
+  background:#F1F7FB;
+}
+input,select,textarea{
+  border:1px solid #CFE0EC;
+  border-radius:12px;
+}
+input:focus,select:focus,textarea:focus{
+  border-color:var(--primary);
+  box-shadow:0 0 0 4px rgba(8,127,193,.10);
+}
+
+/* Registro diferenciado pero funcional */
+.booking{
+  background:#fff;
+}
+.booking-form,.summary{
+  border:0;
+  border-radius:22px;
+  box-shadow:0 18px 45px rgba(16,24,40,.10);
+  overflow:hidden;
+}
+.form-head{
+  background:linear-gradient(135deg,#F1F7FB,#FFFFFF);
+  border-bottom:1px solid var(--line);
+}
+.form-head h3{
+  color:var(--dark);
+}
+.category-box{
+  border:1px solid #CFE0EC;
+  border-radius:16px;
+  background:#F8FBFD;
+}
+.category-dot{
+  background:linear-gradient(135deg,var(--primary),var(--secondary));
+}
+.slots{
+  gap:10px;
+}
+.slot{
+  border:1px solid #CFE0EC;
+  border-radius:12px;
+}
+.slot:hover,.slot.selected{
+  background:linear-gradient(135deg,var(--primary),var(--secondary));
+}
+.summary{
+  border-top:6px solid var(--secondary);
+}
+.payment-grid{
+  gap:10px;
+}
+.pay{
+  border-radius:12px;
+}
+.pay.active{
+  background:var(--primary);
+  color:#fff;
+}
+
+/* Footer distinto */
+.footer{
+  background:#24435D;
+}
+
+/* Responsive */
+@media(max-width:980px){
+  .hero-overlay{
+    width:100%;
+    clip-path:none;
+    opacity:.88;
+  }
+  .welcome-cards{
+    grid-template-columns:1fr 1fr;
+  }
+}
+@media(max-width:650px){
+  .welcome-cards{
+    grid-template-columns:1fr;
+  }
+  .hero h1{
+    font-size:38px;
+  }
+}
+
+
+/* =========================================================
+   REDISEÑO MÁS DIFERENTE: identidad propia Policlínico Enace
+   Mantiene funcionalidad, cambia composición visual para no parecer copia
+   ========================================================= */
+:root{
+  --blue:#0A7CC1;
+  --blue2:#E9F6FD;
+  --yellow:#FFC83D;
+  --dark:#173B57;
+  --text:#243447;
+  --muted:#6C7A89;
+  --light:#F4FAFD;
+  --line:#DCEAF3;
+  --red:#EF4E45;
+  --green:#00A987;
+  --primary:#0A7CC1;
+  --secondary:#00A987;
+}
+body{
+  background:#F6FAFD!important;
+  color:var(--text)!important;
+}
+
+/* Quitar sensación de barra idéntica: top compacto tipo banda informativa */
+.top-info{
+  height:auto!important;
+  background:#173B57!important;
+}
+.top-info .shell{
+  height:auto!important;
+  min-height:38px!important;
+  justify-content:space-between!important;
+}
+.info-block{
+  margin-left:0!important;
+  width:100%!important;
+  justify-content:space-between!important;
+}
+.info-item{
+  border-left:0!important;
+  height:38px!important;
+  padding:0 10px!important;
+  font-size:13px!important;
+  font-weight:600!important;
+}
+.info-item.logo-lab{
+  display:none!important;
+}
+.info-item.social{
+  width:auto!important;
+  font-size:14px!important;
+  background:rgba(255,255,255,.10)!important;
+  border-radius:999px!important;
+  height:28px!important;
+  margin-top:5px!important;
+}
+
+/* Header propio: tipo app médica, no barra clásica */
+.main-header{
+  height:auto!important;
+  background:#F6FAFD!important;
+  border-bottom:0!important;
+  box-shadow:none!important;
+  padding:18px 0!important;
+}
+.main-header .shell{
+  height:auto!important;
+  min-height:78px!important;
+  background:#fff!important;
+  border:1px solid var(--line)!important;
+  border-radius:26px!important;
+  padding:14px 18px!important;
+  box-shadow:0 16px 36px rgba(16,24,40,.08)!important;
+}
+.logo-area{
+  min-width:280px!important;
+}
+.logo-cross{
+  width:54px!important;
+  height:54px!important;
+  border-radius:18px!important;
+  background:linear-gradient(135deg,var(--primary),var(--secondary))!important;
+}
+.logo-cross:before{width:34px!important;height:12px!important}
+.logo-cross:after{width:12px!important;height:34px!important}
+.logo-text{
+  font-size:25px!important;
+  color:#173B57!important;
+  font-style:normal!important;
+  letter-spacing:-.9px!important;
+}
+.logo-text b{
+  color:var(--secondary)!important;
+}
+.menu{
+  gap:8px!important;
+  background:#F1F7FB!important;
+  padding:7px!important;
+  border-radius:999px!important;
+}
+.menu button{
+  padding:10px 14px!important;
+  border-radius:999px!important;
+  font-size:12px!important;
+  color:#526173!important;
+}
+.menu button:after{
+  display:none!important;
+}
+.menu button:hover{
+  background:#fff!important;
+  color:var(--primary)!important;
+}
+.menu button.active{
+  background:#fff!important;
+  color:var(--primary)!important;
+  box-shadow:0 8px 18px rgba(16,24,40,.08)!important;
+}
+.login-btn{
+  background:#173B57!important;
+  color:#fff!important;
+  border-radius:999px!important;
+}
+
+/* Hero totalmente diferente: layout de panel con imagen a la derecha */
+.hero{
+  height:auto!important;
+  min-height:auto!important;
+  background:#F6FAFD!important;
+  padding:24px 0 34px!important;
+  overflow:visible!important;
+}
+.hero-overlay{
+  display:none!important;
+}
+.hero .shell{
+  display:grid!important;
+  grid-template-columns:1.02fr .98fr!important;
+  gap:28px!important;
+  align-items:center!important;
+}
+.hero-content{
+  width:auto!important;
+  padding:54px 0 54px!important;
+  color:var(--text)!important;
+}
+.hero-kicker{
+  color:var(--primary)!important;
+  font-size:15px!important;
+  text-transform:uppercase!important;
+  letter-spacing:.8px!important;
+  background:#E8F6FD!important;
+  display:inline-flex!important;
+  padding:10px 14px!important;
+  border-radius:999px!important;
+  margin-bottom:20px!important;
+}
+.hero-kicker span{
+  font-size:22px!important;
+  color:var(--secondary)!important;
+}
+.hero h1{
+  color:#173B57!important;
+  font-size:56px!important;
+  line-height:1.02!important;
+  letter-spacing:-1.8px!important;
+  font-weight:900!important;
+  margin-bottom:18px!important;
+}
+.hero p{
+  color:#5E6C7A!important;
+  font-size:18px!important;
+  line-height:1.7!important;
+  max-width:600px!important;
+}
+.hero-actions{
+  gap:12px!important;
+}
+.hero-actions .yellow-btn:first-child{
+  background:var(--primary)!important;
+  color:#fff!important;
+}
+.hero-actions .yellow-btn:last-child{
+  background:#fff!important;
+  color:var(--primary)!important;
+  border:1px solid var(--line)!important;
+}
+.hero:after{
+  content:"";
+  display:block;
+  min-height:520px;
+  border-radius:36px;
+  background:
+    linear-gradient(180deg,rgba(10,124,193,.05),rgba(23,59,87,.25)),
+    var(--hero) center/cover no-repeat;
+  box-shadow:0 24px 60px rgba(16,24,40,.13);
+  border:1px solid #fff;
+}
+.hero-arrows{
+  display:none!important;
+}
+
+/* Bienvenida: formato horizontal tipo propuesta, no 3 cards iguales arriba */
+.welcome{
+  background:#fff!important;
+  padding:54px 0!important;
+}
+.welcome:before{
+  display:none!important;
+}
+.welcome .section-title{
+  text-align:left!important;
+  max-width:1180px!important;
+  margin:0 auto 26px!important;
+}
+.welcome .section-title h2{
+  font-size:34px!important;
+  text-transform:none!important;
+  color:#173B57!important;
+}
+.welcome .section-title p{
+  margin-left:0!important;
+}
+.welcome-cards{
+  max-width:none!important;
+  grid-template-columns:1.2fr 1fr 1fr!important;
+  gap:18px!important;
+}
+.welcome-card{
+  min-height:210px!important;
+  border:1px solid var(--line)!important;
+  border-radius:28px!important;
+  box-shadow:0 14px 34px rgba(16,24,40,.07)!important;
+  padding:24px!important;
+  background:#fff!important;
+}
+.welcome-card:first-child{
+  background:linear-gradient(135deg,#173B57,#0A7CC1)!important;
+  color:#fff!important;
+}
+.welcome-card:first-child h3,
+.welcome-card:first-child p{
+  color:#fff!important;
+}
+.card-icon{
+  position:static!important;
+  transform:none!important;
+  width:48px!important;
+  height:48px!important;
+  border:0!important;
+  border-radius:16px!important;
+  background:#E8F6FD!important;
+  color:var(--primary)!important;
+  margin-bottom:16px!important;
+}
+.welcome-card:first-child .card-icon{
+  background:rgba(255,255,255,.16)!important;
+  color:#fff!important;
+}
+.welcome-card h3{
+  text-transform:none!important;
+  font-size:20px!important;
+  color:#173B57!important;
+}
+.welcome-card p{
+  font-size:14px!important;
+}
+
+/* Secciones tipo dashboard clínico */
+.services{
+  padding:70px 0!important;
+  background:#F6FAFD!important;
+}
+.services:nth-of-type(3){
+  background:#fff!important;
+}
+.section-title{
+  text-align:left!important;
+  margin-bottom:28px!important;
+}
+.section-title small{
+  color:var(--secondary)!important;
+}
+.section-title h2{
+  text-transform:none!important;
+  font-size:38px!important;
+  color:#173B57!important;
+}
+.section-title p{
+  margin-left:0!important;
+  max-width:760px!important;
+}
+
+/* Info: reemplaza estilo de imagen rectangular por tarjetas rounded */
+.service-feature{
+  grid-template-columns:.95fr 1.05fr!important;
+  gap:24px!important;
+}
+.feature-img{
+  height:470px!important;
+  border-radius:34px!important;
+  overflow:hidden!important;
+  box-shadow:0 22px 55px rgba(16,24,40,.12)!important;
+}
+.feature-text{
+  background:rgba(255,255,255,.92)!important;
+  color:#173B57!important;
+  left:24px!important;
+  right:24px!important;
+  bottom:24px!important;
+  border-radius:24px!important;
+  padding:22px!important;
+}
+.feature-text h3{
+  color:#173B57!important;
+  text-transform:none!important;
+}
+.feature-text p{
+  color:#5E6C7A!important;
+}
+.chip{
+  background:#E8F6FD!important;
+  color:var(--primary)!important;
+  border:0!important;
+}
+.side-card{
+  border:0!important;
+  border-radius:28px!important;
+  padding:26px!important;
+  background:#fff!important;
+  box-shadow:0 14px 34px rgba(16,24,40,.07)!important;
+}
+.side-card:nth-child(2){
+  background:#E8F6FD!important;
+}
+.side-card h3{
+  text-transform:none!important;
+  font-size:21px!important;
+  color:#173B57!important;
+}
+
+/* Servicios carrusel como tarjetas clínicas, no bloque azul */
+.carousel{
+  gap:18px!important;
+}
+.service-card{
+  flex:0 0 320px!important;
+  min-height:220px!important;
+  background:#fff!important;
+  color:#173B57!important;
+  border:1px solid var(--line)!important;
+  border-radius:28px!important;
+  box-shadow:0 14px 34px rgba(16,24,40,.07)!important;
+  padding:24px!important;
+}
+.service-card:before{
+  content:"";
+  display:block;
+  width:52px;
+  height:52px;
+  border-radius:18px;
+  background:linear-gradient(135deg,var(--primary),var(--secondary));
+  margin-bottom:18px;
+}
+.service-card:after{
+  display:none!important;
+}
+.service-card h3{
+  color:#173B57!important;
+  font-size:20px!important;
+}
+.service-card p{
+  color:#5E6C7A!important;
+  font-size:14px!important;
+}
+.service-card .yellow-btn{
+  background:#E8F6FD!important;
+  color:var(--primary)!important;
+}
+.carousel-btn{
+  background:#fff!important;
+  color:var(--primary)!important;
+  border:1px solid var(--line)!important;
+  border-radius:16px!important;
+}
+
+/* Galería distinta: mosaico rounded */
+.gallery{
+  background:#fff!important;
+}
+.gallery-grid{
+  gap:22px!important;
+}
+.gallery-card{
+  border-radius:30px!important;
+  overflow:hidden!important;
+  box-shadow:0 14px 34px rgba(16,24,40,.07)!important;
+}
+.gallery-card img{
+  height:230px!important;
+}
+.gallery-body{
+  padding:22px!important;
+}
+
+/* Noticias/CTA diferente */
+.news{
+  background:#F6FAFD!important;
+  color:#173B57!important;
+}
+.news:before{
+  display:none!important;
+}
+.news .shell{
+  background:linear-gradient(135deg,#173B57,#0A7CC1)!important;
+  border-radius:34px!important;
+  padding:38px!important;
+  color:#fff!important;
+}
+.news h2,
+.news p{
+  color:#fff!important;
+}
+
+/* Contacto diferente: tarjeta y mapa rounded */
+.contact{
+  grid-template-columns:.9fr 1.1fr!important;
+  gap:0!important;
+  background:#fff!important;
+  padding:70px min(40px,4vw)!important;
+}
+.map{
+  border-radius:34px 0 0 34px!important;
+  min-height:430px!important;
+}
+.contact-form{
+  border-radius:0 34px 34px 0!important;
+  background:#F6FAFD!important;
+}
+.contact-form h2{
+  color:#173B57!important;
+}
+
+/* Registro final como módulo propio */
+.booking{
+  background:#F6FAFD!important;
+  padding:74px 0!important;
+}
+.booking-wrap{
+  gap:24px!important;
+}
+.booking-form,.summary{
+  border:0!important;
+  border-radius:32px!important;
+  box-shadow:0 22px 55px rgba(16,24,40,.10)!important;
+}
+.form-head{
+  background:linear-gradient(135deg,#173B57,#0A7CC1)!important;
+  color:#fff!important;
+  border:0!important;
+}
+.form-head h3,
+.form-head p{
+  color:#fff!important;
+}
+.form-title{
+  color:#173B57!important;
+}
+.category-box{
+  border:1px solid var(--line)!important;
+  border-radius:22px!important;
+}
+input,select,textarea{
+  border:1px solid #D4E3EE!important;
+  border-radius:16px!important;
+}
+.slot{
+  border-radius:16px!important;
+}
+.slot:hover,.slot.selected{
+  background:linear-gradient(135deg,var(--primary),var(--secondary))!important;
+}
+.summary{
+  border-top:8px solid var(--secondary)!important;
+}
+.summary h2{
+  color:#173B57!important;
+}
+.pay{
+  border-radius:16px!important;
+}
+.pay.active{
+  background:linear-gradient(135deg,var(--primary),var(--secondary))!important;
+}
+
+/* Footer */
+.footer{
+  background:#173B57!important;
+}
+
+/* Responsive */
+@media(max-width:980px){
+  .top-info .shell,
+  .info-block{
+    justify-content:center!important;
+  }
+  .hero .shell{
+    grid-template-columns:1fr!important;
+  }
+  .hero:after{
+    min-height:360px;
+  }
+  .welcome-cards{
+    grid-template-columns:1fr!important;
+  }
+  .service-feature,
+  .contact{
+    grid-template-columns:1fr!important;
+  }
+  .map,
+  .contact-form{
+    border-radius:28px!important;
+  }
+}
+@media(max-width:650px){
+  .main-header .shell{
+    border-radius:18px!important;
+  }
+  .menu{
+    border-radius:18px!important;
+  }
+  .hero h1{
+    font-size:38px!important;
+  }
+  .hero-content{
+    padding:32px 0!important;
+  }
 }
 
 </style>
 </head>
 <body>
-<header class="topbar">
-  <div class="shell nav">
-    <div class="category-strip" id="categoryStrip"></div>
-    <button class="admin-link" id="adminBtn">LOGIN</button>
+<header>
+  <div class="top-info">
+    <div class="shell">
+      <div class="info-block">
+        <div class="info-item">☎ 908 205 000</div>
+        <div class="info-item">✉ atencionalcliente@policlinicoenace.pe</div>
+        <div class="info-item logo-lab">EnaceLab</div>
+        <div class="info-item social">◎</div>
+        <div class="info-item social">f</div>
+      </div>
+    </div>
+  </div>
+  <div class="main-header">
+    <div class="shell">
+      <button class="logo-area" id="homeBtn">
+        <div class="logo-cross"><span>+</span></div>
+        <div class="logo-text">Policlínico<b>Enace</b></div>
+      </button>
+      <nav class="menu" id="menu"></nav>
+      <button class="login-btn" id="adminBtn">LOGIN</button>
+    </div>
   </div>
 </header>
 
 <main id="patientView">
   <section class="hero">
+    <div class="hero-overlay"></div>
     <div class="shell">
-      <div class="hero-card">
-        <div class="hero-content">
-          <div class="eyebrow" id="eyebrow"></div>
-          <h1 id="heroTitle"></h1>
-          <p class="lead" id="heroText"></p>
-          <div class="hero-actions">
-            <a class="btn btn-primary" href="#registro">Reservar cita</a>
-            <a class="btn btn-soft" href="#info">Ver información</a>
-            <a class="btn btn-accent" href="#resenas">Reseñas</a>
-          </div>
-          <div class="stat-grid">
-            <div class="stat"><strong id="statPrice">S/ 0</strong><span>Precio referencial desde</span></div>
-            <div class="stat"><strong id="statSchedule">Agenda</strong><span>Horarios disponibles</span></div>
-            <div class="stat"><strong id="statMode">Pago</strong><span>Confirmación con pago previo</span></div>
-          </div>
+      <div class="hero-content">
+        <div class="hero-kicker"><span>+</span><b id="heroKicker">SALUD</b></div>
+        <h1 id="heroTitle">POLICLÍNICO</h1>
+        <p id="heroText"></p>
+        <div class="hero-actions">
+          <a href="#registro" class="yellow-btn">+ Agendar cita</a>
+          <a href="#servicios" class="yellow-btn">+ Ver servicios</a>
         </div>
       </div>
     </div>
+    <div class="hero-arrows"><button>‹</button><button>›</button></div>
   </section>
 
-  <section id="info">
+  <section class="welcome">
     <div class="shell">
-      <div class="section-head">
-        <div>
-          <h2 id="infoTitle"></h2>
-          <p id="infoSubtitle"></p>
-        </div>
-        <a href="#registro" class="btn btn-primary">Agendar ahora</a>
+      <div class="section-title">
+        <small>Inicio</small>
+        <h2>Plataforma de citas del policlínico</h2>
+        <p>Para la atención de nuestros servicios, contamos con una plataforma digital de citas y un panel de administración para la gestión interna.</p>
       </div>
-      <div class="info-grid">
-        <article class="photo-panel">
-          <div class="photo-content">
-            <h3 id="photoTitle"></h3>
-            <p id="photoDesc"></p>
-            <div class="chips" id="chips"></div>
-          </div>
-        </article>
-        <div class="side">
-          <div class="card"><h3>Sobre este servicio</h3><p id="benefit"></p></div>
-          <div class="card"><h3>Disponibilidad</h3><p id="schedule"></p></div>
-          <div class="card"><h3>Proceso de atención</h3><p>Elige el servicio, revisa horarios libres, registra tus datos y confirma la cita con pago previo.</p></div>
-        </div>
+      <div class="welcome-cards">
+        <div class="welcome-card"><div class="card-icon">☑</div><h3>Servicios</h3><p id="welcomeText">Atención médica y servicios digitales para registrar citas.</p><a class="yellow-btn" href="#servicios">+ Ver más</a></div>
+        <div class="welcome-card"><div class="card-icon">▣</div><h3>Multimedia</h3><p>Galería visual de servicios, atenciones y especialidades disponibles para los pacientes.</p><a class="yellow-btn" href="#galeria">+ Ver más</a></div>
+        <div class="welcome-card"><div class="card-icon">☏</div><h3>Contacto y ubicación</h3><p>Comunícate con el equipo para consultas, citas y servicios especiales.</p><a class="yellow-btn" href="#contacto">+ Ver más</a></div>
       </div>
     </div>
   </section>
 
-  <section id="servicios">
+  <section class="services" id="info">
     <div class="shell">
-      <div class="section-head">
-        <div><h2>Atenciones disponibles</h2><p>Estas opciones pertenecen únicamente a la categoría seleccionada.</p></div>
-      </div>
-      <div class="carousel-wrap">
-        <button class="carousel-btn" id="carouselPrev" type="button">‹</button>
-        <div class="service-carousel" id="servicesGrid"></div>
-        <button class="carousel-btn" id="carouselNext" type="button">›</button>
+      <div class="section-title"><small>Información</small><h2 id="infoTitle"></h2><p id="infoSubtitle"></p></div>
+      <div class="service-feature">
+        <article class="feature-img"><div class="feature-text"><h3 id="featureTitle"></h3><p id="featureDesc"></p><div class="chips" id="chips"></div></div></article>
+        <aside>
+          <div class="side-card"><h3>Sobre el servicio</h3><p id="benefit"></p></div>
+          <div class="side-card"><h3>Disponibilidad</h3><p id="schedule"></p></div>
+          <div class="side-card"><h3>Proceso de atención</h3><p>Elige el servicio, revisa horarios libres, registra tus datos y confirma la cita con pago previo.</p></div>
+        </aside>
       </div>
     </div>
   </section>
 
-  <section id="resenas">
+  <section class="services" id="servicios">
     <div class="shell">
-      <div class="section-head">
-        <div><h2>Reseñas</h2><p id="reviewsSub"></p></div>
-      </div>
-      <div class="reviews-grid" id="reviewsGrid"></div>
+      <div class="section-title"><small>Servicios</small><h2>Nuestros servicios</h2><p>Consulta nuestra lista de atenciones y elige la opción que necesitas.</p></div>
+      <div class="carousel-wrap"><button class="carousel-btn" id="carouselPrev">‹</button><div class="carousel" id="servicesGrid"></div><button class="carousel-btn" id="carouselNext">›</button></div>
     </div>
   </section>
 
-  <section id="contacto">
+  <section class="gallery" id="galeria">
     <div class="shell">
-      <div class="section-head">
-        <div><h2>Contacto</h2><p>Datos comerciales y detalles de la categoría.</p></div>
+      <div class="section-title"><small>Multimedia</small><h2>Conoce nuestras áreas</h2><p>Imágenes referenciales para presentar las principales líneas de atención.</p></div>
+      <div class="gallery-grid">
+        <div class="gallery-card"><img src="https://images.unsplash.com/photo-1586773860418-d37222d8fce3?auto=format&fit=crop&w=800&q=80"><div class="gallery-body"><small>Servicios médicos</small><h3>Atención integral para pacientes</h3><a class="yellow-btn" href="#registro">+ Ver más</a></div></div>
+        <div class="gallery-card"><img src="https://images.unsplash.com/photo-1609220136736-443140cffec6?auto=format&fit=crop&w=800&q=80"><div class="gallery-body"><small>Terapias</small><h3>Evaluación y seguimiento especializado</h3><a class="yellow-btn" href="#registro">+ Ver más</a></div></div>
+        <div class="gallery-card"><img src="https://images.unsplash.com/photo-1606811971618-4486d14f3f99?auto=format&fit=crop&w=800&q=80"><div class="gallery-body"><small>Dental</small><h3>Odontología preventiva y estética</h3><a class="yellow-btn" href="#registro">+ Ver más</a></div></div>
       </div>
-      <div class="contact-grid" id="contactGrid"></div>
     </div>
   </section>
 
-  <section class="booking-section" id="registro">
+  <section class="news">
     <div class="shell">
-      <div class="section-head">
-        <div>
-          <h2>Registro de cita</h2>
-          <p>Completa tus datos, elige un horario disponible y realiza el pago para confirmar.</p>
-        </div>
+      <div><h2>Información para pacientes</h2><p>Espacio para campañas, comunicados, promociones o información importante para los pacientes.</p><a class="yellow-btn" href="#contacto">+ Ver más</a></div>
+      <div><h2>Proceso de atención</h2><p>Registro de cita, horario disponible, pago previo y confirmación para el paciente.</p><a class="yellow-btn" href="#registro">+ Reservar</a></div>
+    </div>
+  </section>
+
+  <section class="contact" id="contacto">
+    <div class="map"></div>
+    <div class="contact-form">
+      <h2>Contáctanos</h2>
+      <p>Escríbenos y nuestro equipo se pondrá en contacto contigo.</p>
+      <div class="contact-grid">
+        <input placeholder="Ingrese su nombre">
+        <input placeholder="Ingrese su teléfono">
+        <input placeholder="Ingrese su e-mail">
+        <input placeholder="Ingrese un asunto">
+        <textarea class="full" placeholder="Déjenos un mensaje"></textarea>
       </div>
+      <button class="yellow-btn" style="margin-top:18px">+ Consultar</button>
+    </div>
+  </section>
+
+  <section class="booking" id="registro">
+    <div class="shell">
+      <div class="section-title"><small>Reserva online</small><h2>Registro de cita</h2><p>Completa tus datos, elige un horario disponible y confirma con pago previo.</p></div>
       <div class="booking-wrap">
         <div class="booking-form">
-          <div class="form-header">
-            <span class="small">Reserva en línea</span>
-            <h3>Completa tu cita en 3 pasos</h3>
-            <p>Primero selecciona la atención, luego elige un horario disponible y finalmente valida el pago para confirmar.</p>
-          </div>
-
+          <div class="form-head"><h3>Completa tu cita</h3><p>Selecciona atención, horario y datos del paciente.</p></div>
           <div class="form-body">
             <div id="formNotice" class="notice hidden"></div>
-
             <div class="form-section">
-              <div class="form-section-title"><span class="step-badge">1</span><span>Datos de la atención</span></div>
+              <div class="form-title">1. Datos de atención</div>
               <div class="form-grid">
-                <div class="field full">
+                <div class="full">
                   <label>Categoría seleccionada</label>
                   <select id="categorySelect" aria-hidden="true" tabindex="-1"></select>
-                  <div class="current-category-box">
-                    <div class="category-display-left">
-                      <div class="category-dot" id="categoryDot">PE</div>
-                      <div class="category-display-title">
-                        <strong id="categoryDisplayName">Policlínico Enace</strong>
-                        <span id="categoryDisplaySub">Estás reservando dentro de esta categoría</span>
-                      </div>
-                    </div>
-                    <div class="category-display-badge">Se cambia desde el navbar</div>
-                  </div>
+                  <div class="category-box"><div style="display:flex;gap:12px;align-items:center"><div class="category-dot" id="categoryDot">P</div><div class="category-title"><strong id="categoryDisplayName">Policlínico Enace</strong><span id="categoryDisplaySub">Reserva dentro de esta categoría</span></div></div><span class="yellow-btn">Desde menú</span></div>
                 </div>
-                <div class="field"><label>Atención interna</label><select id="subserviceSelect"></select></div>
-                <div class="field"><label>Sede / profesional</label><select id="professionalSelect"></select></div>
-                <div class="field"><label>Tipo de atención</label><select id="attentionType"><option>Presencial</option><option>Domiciliaria</option><option>Teleconsulta</option></select></div>
-                <div class="field"><label>Fecha</label><input type="date" id="dateInput"></div>
-                <div class="field"><label>DNI / Documento</label><input id="docInput" placeholder="Ej. 12345678"></div>
+                <div><label>Atención interna</label><select id="subserviceSelect"></select></div>
+                <div><label>Sede / profesional</label><select id="professionalSelect"></select></div>
+                <div><label>Tipo de atención</label><select id="attentionType"><option>Presencial</option><option>Domiciliaria</option><option>Teleconsulta</option></select></div>
+                <div><label>Fecha</label><input type="date" id="dateInput"></div>
+                <div><label>DNI / Documento</label><input id="docInput" placeholder="Ej. 12345678"></div>
               </div>
             </div>
-
+            <div class="form-section"><div class="form-title">2. Horario disponible</div><div class="slots" id="slotsGrid"></div></div>
             <div class="form-section">
-              <div class="form-section-title"><span class="step-badge">2</span><span>Horario disponible</span></div>
-              <div class="slots" id="slotsGrid"></div>
-            </div>
-
-            <div class="form-section">
-              <div class="form-section-title"><span class="step-badge">3</span><span>Datos del paciente</span></div>
+              <div class="form-title">3. Datos del paciente</div>
               <div class="form-grid">
-                <div class="field"><label>Paciente</label><input id="nameInput" placeholder="Nombres y apellidos"></div>
-                <div class="field"><label>Celular / WhatsApp</label><input id="phoneInput" placeholder="Ej. 999 999 999"></div>
-                <div class="field"><label>Correo</label><input id="emailInput" type="email" placeholder="correo@ejemplo.com"></div>
-                <div class="field"><label>Edad</label><input id="ageInput" type="number" min="0" placeholder="Ej. 30"></div>
-                <div class="field full"><label>Motivo / observaciones</label><textarea id="notesInput" placeholder="Describe brevemente el motivo"></textarea></div>
+                <div><label>Paciente</label><input id="nameInput" placeholder="Nombres y apellidos"></div>
+                <div><label>Celular / WhatsApp</label><input id="phoneInput" placeholder="Ej. 999 999 999"></div>
+                <div><label>Correo</label><input id="emailInput" type="email" placeholder="correo@ejemplo.com"></div>
+                <div><label>Edad</label><input id="ageInput" type="number" min="0" placeholder="Ej. 30"></div>
+                <div class="full"><label>Motivo / observaciones</label><textarea id="notesInput" placeholder="Describe brevemente el motivo"></textarea></div>
               </div>
             </div>
           </div>
@@ -1149,14 +1207,10 @@ footer{padding:30px 0 42px;color:var(--muted);border-top:1px solid var(--line);b
           <div class="summary-line"><span>Tipo</span><strong id="sumType"></strong></div>
           <div class="total"><span>Total</span><strong id="sumPrice"></strong></div>
           <label>Método de pago</label>
-          <div class="payment-grid">
-            <div class="pay active" data-pay="Tarjeta">Tarjeta</div>
-            <div class="pay" data-pay="Yape/Plin">Yape/Plin</div>
-            <div class="pay" data-pay="Transferencia">Transferencia</div>
-          </div>
+          <div class="payment-grid"><div class="pay active" data-pay="Tarjeta">Tarjeta</div><div class="pay" data-pay="Yape/Plin">Yape/Plin</div><div class="pay" data-pay="Transferencia">Transferencia</div></div>
           <div id="paymentNotice" class="notice">Pago pendiente. La cita aún no puede confirmarse.</div>
-          <button class="btn btn-soft" id="payBtn" style="width:100%;margin-bottom:10px">Simular pago aprobado</button>
-          <button class="btn btn-primary" id="confirmBtn" style="width:100%" disabled>Confirmar cita</button>
+          <button class="yellow-btn" id="payBtn" style="width:100%;margin-bottom:10px">Simular pago aprobado</button>
+          <button class="btn btn-blue" id="confirmBtn" style="width:100%" disabled>Confirmar cita</button>
         </aside>
       </div>
     </div>
@@ -1164,200 +1218,72 @@ footer{padding:30px 0 42px;color:var(--muted);border-top:1px solid var(--line);b
 </main>
 
 <main id="adminView" class="admin-view">
-  <section>
+  <section class="booking">
     <div class="shell">
       <div class="login admin-card" id="loginPanel">
-        <h2 style="margin-top:0">Panel administrativo</h2>
-        <p style="color:var(--muted);line-height:1.6">Acceso privado para ver citas, pagos y horarios.</p>
-        <div class="form-grid">
-          <div class="field full"><label>Usuario</label><input id="adminUser" placeholder="admin"></div>
-          <div class="field full"><label>Contraseña</label><input id="adminPass" type="password" placeholder="1234"></div>
-        </div>
+        <h2>Panel administrativo</h2>
+        <p>Acceso privado para ver citas, pagos y horarios.</p>
+        <div class="form-grid"><div class="full"><label>Usuario</label><input id="adminUser" placeholder="admin"></div><div class="full"><label>Contraseña</label><input id="adminPass" type="password" placeholder="1234"></div></div>
         <div id="loginNotice" class="notice hidden"></div>
-        <button class="btn btn-primary" id="loginBtn" style="width:100%;margin-top:14px">Ingresar</button>
-        <p style="font-size:12px;color:var(--muted)">Demo: admin / 1234</p>
+        <button class="btn btn-blue" id="loginBtn" style="width:100%;margin-top:14px">Ingresar</button>
+        <p style="font-size:12px;color:#667085">Demo: admin / 1234</p>
       </div>
       <div class="dashboard" id="dashboardPanel">
-        <div class="section-head">
-          <div><h2>Dashboard de citas</h2><p>Vista administrativa de reservas y ocupación.</p></div>
-          <div style="display:flex;gap:10px;flex-wrap:wrap">
-            <button class="btn btn-soft" id="backPatientBtn">Volver</button>
-            <button class="btn btn-danger" id="logoutBtn">Cerrar sesión</button>
-          </div>
-        </div>
-        <div class="dash-grid">
-          <div class="dash"><span>Citas pagadas</span><strong id="kpiPaid">0</strong></div>
-          <div class="dash"><span>Ingresos</span><strong id="kpiRevenue">S/ 0</strong></div>
-          <div class="dash"><span>Citas de hoy</span><strong id="kpiToday">0</strong></div>
-          <div class="dash"><span>Categoría top</span><strong id="kpiTop" style="font-size:18px">-</strong></div>
-        </div>
+        <div class="section-title"><small>Admin</small><h2>Dashboard de citas</h2><p>Vista administrativa de reservas y ocupación.</p></div>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end;margin-bottom:16px"><button class="yellow-btn" id="backPatientBtn">Volver</button><button class="btn btn-danger" id="logoutBtn">Cerrar sesión</button></div>
+        <div class="dash-grid"><div class="dash"><span>Citas pagadas</span><strong id="kpiPaid">0</strong></div><div class="dash"><span>Ingresos</span><strong id="kpiRevenue">S/ 0</strong></div><div class="dash"><span>Citas de hoy</span><strong id="kpiToday">0</strong></div><div class="dash"><span>Categoría top</span><strong id="kpiTop" style="font-size:18px">-</strong></div></div>
         <div class="admin-card">
-          <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap">
-            <h3 style="margin:0">Citas registradas</h3>
-            <div style="display:flex;gap:10px;flex-wrap:wrap">
-              <button class="btn btn-soft" id="seedBtn">Datos demo</button>
-              <button class="btn btn-soft" id="exportBtn">Exportar CSV</button>
-              <button class="btn btn-danger" id="clearBtn">Limpiar</button>
-            </div>
-          </div>
-          <div class="filters">
-            <div class="field"><label>Fecha</label><input id="filterDate" type="date"></div>
-            <div class="field"><label>Categoría</label><select id="filterCategory"></select></div>
-            <div class="field"><label>Estado</label><select id="filterStatus"><option value="">Todos</option><option value="Pagado">Pagado</option><option value="Cancelado">Cancelado</option></select></div>
-            <button class="btn btn-soft" id="resetFilters">Reset</button>
-          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap"><h3>Citas registradas</h3><div style="display:flex;gap:10px;flex-wrap:wrap"><button class="yellow-btn" id="seedBtn">Datos demo</button><button class="yellow-btn" id="exportBtn">Exportar CSV</button><button class="btn btn-danger" id="clearBtn">Limpiar</button></div></div>
+          <div class="filters"><div><label>Fecha</label><input id="filterDate" type="date"></div><div><label>Categoría</label><select id="filterCategory"></select></div><div><label>Estado</label><select id="filterStatus"><option value="">Todos</option><option value="Pagado">Pagado</option><option value="Cancelado">Cancelado</option></select></div><button class="yellow-btn" id="resetFilters">Reset</button></div>
           <div class="table-wrap"><table><thead><tr><th>Código</th><th>Paciente</th><th>Categoría</th><th>Atención</th><th>Profesional</th><th>Fecha / hora</th><th>Pago</th><th>Total</th><th>Acción</th></tr></thead><tbody id="appointmentsTable"></tbody></table></div>
         </div>
-        <div class="admin-card" style="margin-top:18px"><h3 style="margin-top:0">Ocupación por horario</h3><div class="timeline" id="timeline"></div></div>
+        <div class="admin-card" style="margin-top:18px"><h3>Ocupación por horario</h3><div class="timeline" id="timeline"></div></div>
       </div>
     </div>
   </section>
 </main>
 
-<div class="modal" id="modal">
-  <div class="modal-card">
-    <h2>✅ Cita confirmada</h2>
-    <p style="color:var(--muted);line-height:1.6">Tu cita fue registrada correctamente.</p>
-    <div class="receipt" id="receipt"></div>
-    <button class="btn btn-primary" id="closeModal" style="width:100%">Listo</button>
-  </div>
-</div>
+<div class="modal" id="modal"><div class="modal-card"><h2>✅ Cita confirmada</h2><p>Tu cita fue registrada correctamente.</p><div class="receipt" id="receipt"></div><button class="btn btn-blue" id="closeModal" style="width:100%">Listo</button></div></div>
 
-<footer><div class="shell">Policlínico Enace · Sistema de reservas por categoría</div></footer>
+<footer class="footer"><div class="shell footer-grid"><div><h3>PoliEnace</h3><p>Empresa dedicada al servicio de la salud, citas médicas, terapias, atención domiciliaria y servicios especializados.</p></div><div><h3>Contacto</h3><p>908 205 000<br>atencionalcliente@policlinicoenace.pe</p></div><div><h3>Admin</h3><p>Usuario demo: admin<br>Clave demo: 1234</p></div></div></footer>
 
 <script>
 const categories=[
-{id:'principal',nav:'Principal',name:'Policlínico Enace',sub:'Página principal del policlínico',colors:['#1877F2','#20C997','#FF6B35','#F7FBFF','#EAF4FF','#FFF3ED'],hero:"url('https://images.unsplash.com/photo-1586773860418-d37222d8fce3?auto=format&fit=crop&w=1800&q=85')",texture:"url('https://images.unsplash.com/photo-1584982751601-97dcc096659c?auto=format&fit=crop&w=1800&q=85')",eyebrow:'🏥 Tu salud es nuestra responsabilidad',title:'Reserva tu cita en Policlínico Enace',text:'Atención médica integral con medicina general, especialidades, laboratorio, rayos X, ecografía, odontología, terapia física, farmacia, emergencias y ambulancia.',price:65,schedule:'8am-8pm',mode:'Cita pagada',subs:['Medicina general','Medicina interna','Cardiología','Ginecología','Pediatría','Laboratorio clínico','Rayos X','Ecografía','Terapia física','Ambulancia'],pros:['Central Policlínico Enace','Dr. Medicina General','Área de Laboratorio','Área de Imágenes','Área de Terapia Física'],chips:['Medicina general','Especialidades','Laboratorio','Rayos X','Ecografía','Terapia física','Ambulancia'],benefit:'Integra consultas, diagnóstico y servicios complementarios en una sola agenda digital.',contact:['Central: 908 205 000','Horario: lunes a domingo','Laboratorio, imágenes y consultas'],reviews:[['AT','La reserva fue rápida y clara.'],['MR','La atención estuvo ordenada desde el registro.'],['LC','Me gustó ver el resumen antes de confirmar.']]},
-{id:'neuro',nav:'Neurodesarrollo',name:'Centro Integral del Neurodesarrollo',sub:'Terapias y evaluación especializada',colors:['#4F46E5','#06B6D4','#F59E0B','#F8FAFF','#EEF2FF','#FFF7E6'],hero:"url('https://images.unsplash.com/photo-1609220136736-443140cffec6?auto=format&fit=crop&w=1800&q=85')",texture:"url('https://images.unsplash.com/photo-1588072432836-e10032774350?auto=format&fit=crop&w=1800&q=85')",eyebrow:'🧩 Potenciamos el desarrollo infantil desde el juego',title:'Reserva terapias de Neurodesarrollo',text:'Evaluación neuropsicológica, terapia psicológica, lenguaje, ocupacional, integración sensorial, autismo, TDAH, aprendizaje y familia.',price:85,schedule:'Programado',mode:'Terapias',subs:['Evaluación neuropsicológica','Terapia psicológica','Terapia de lenguaje','Terapia ocupacional','Integración sensorial','Estimulación temprana','Terapia familiar','Orientación a padres'],pros:['Especialista en Neurodesarrollo','Psicóloga Infantil','Terapeuta de Lenguaje','Terapeuta Ocupacional'],chips:['Autismo','TDAH','Lenguaje','Ocupacional','Aprendizaje','Familia'],benefit:'Agenda clara para familias que necesitan seguimiento terapéutico continuo.',contact:['WhatsApp: 924 261 459','Niños, adolescentes y adultos','Frente al Colegio César Vallejo BT'],reviews:[['JP','Me orientaron bien sobre la terapia.'],['RM','Ordena las sesiones por fecha y profesional.'],['KL','La información es clara para padres.']]},
-{id:'juis',nav:'Juis Kids',name:'Juis Kids',sub:'Nido, guardería y estimulación temprana',colors:['#0EA5E9','#EC4899','#FACC15','#FFFBFE','#E0F2FE','#FCE7F3'],hero:"url('https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?auto=format&fit=crop&w=1800&q=85')",texture:"url('https://images.unsplash.com/photo-1587654780291-39c9404d746b?auto=format&fit=crop&w=1800&q=85')",eyebrow:'🎒 Seguridad, aprendizaje y diversión',title:'Reserva una visita en Juis Kids',text:'Cuna, guardería, estimulación temprana, neurodesarrollo integral, método Montessori, psicomotricidad, apoyo escolar, inglés y computación.',price:50,schedule:'Turnos',mode:'Kids',subs:['Visita informativa','Nido guardería','Aula bebés','Estimulación temprana','Psicomotricidad','Apoyo escolar','Taller lúdico','Full day'],pros:['Coordinadora Juis Kids','Docente Inicial','Especialista en Estimulación Temprana'],chips:['Guardería','Montessori','Aula bebés','Psicomotricidad','Inglés','Full day'],benefit:'Ideal para registrar visitas, matrículas, evaluaciones iniciales y turnos de cuidado.',contact:['Contacto: 926 635 980','Contacto: 962 341 659','Ubicación: Carabayllo'],reviews:[['GV','La reserva de visita fue cómoda.'],['NS','Me dio confianza ver los turnos.'],['PL','Transmite un ambiente seguro y alegre.']]},
-{id:'ponce',nav:'Ambulancia 24h',name:'Atención Domiciliaria y Ambulancia',sub:'Atención médica móvil y traslados',colors:['#0F766E','#14B8A6','#3B82F6','#F6FFFC','#CCFBF1','#EFF6FF'],hero:"url('https://images.unsplash.com/photo-1516574187841-cb9cc2ca948b?auto=format&fit=crop&w=1800&q=85')",texture:"url('https://images.unsplash.com/photo-1587351021759-3e566b6af7cc?auto=format&fit=crop&w=1800&q=85')",eyebrow:'🚑 Ambulancia y atención médica flexible',title:'Reserva atención domiciliaria o ambulancia',text:'Servicio para coordinar atención médica domiciliaria, procedimientos básicos, orientación clínica y traslado en ambulancia según disponibilidad.',price:70,schedule:'24h ambulancia',mode:'Domicilio',subs:['Medicina general','Traumatología','Medicina interna','Dermatología','Ginecología','Cardiología','Lavado de oídos','Pie diabético','Atención domiciliaria','Ambulancia'],pros:['Central Policlínico Ponce','Equipo Domiciliario','Área de Procedimientos','Central de Ambulancia'],chips:['Domiciliaria','Ambulancia 24h','Procedimientos','Laboratorio','Especialidades'],benefit:'Coordina visitas a domicilio, procedimientos básicos o traslados sin mezclar esta agenda con las consultas presenciales del policlínico.',contact:['Coordinación por central','Atención domiciliaria según zona','Ambulancia y traslado según disponibilidad'],reviews:[['CD','La reserva domiciliaria quedó clara.'],['EL','Se diferencia atención en casa y traslado.'],['AV','Útil para ordenar horarios de ambulancia.']]},
-{id:'dental',nav:'Dental',name:'Centro Dental',sub:'Odontología moderna y estética',colors:['#0891B2','#67E8F9','#6366F1','#F8FEFF','#ECFEFF','#EEF2FF'],hero:"url('https://images.unsplash.com/photo-1606811971618-4486d14f3f99?auto=format&fit=crop&w=1800&q=85')",texture:"url('https://images.unsplash.com/photo-1629909613654-28e377c37b09?auto=format&fit=crop&w=1800&q=85')",eyebrow:'🦷 Odontología general, estética y preventiva',title:'Reserva tu atención dental',text:'Odontología general, limpieza dental, ortodoncia, endodoncia, estética dental, blanqueamiento y diseño de sonrisa.',price:60,schedule:'Cita dental',mode:'Dental',subs:['Evaluación dental','Odontología general','Limpieza dental','Ortodoncia','Endodoncia','Blanqueamiento dental','Diseño de sonrisa','Resinas estéticas'],pros:['Odontólogo General','Especialista en Ortodoncia','Especialista en Endodoncia','Especialista en Estética Dental'],chips:['Odontología','Limpieza','Ortodoncia','Endodoncia','Estética','Blanqueamiento'],benefit:'Permite ordenar evaluaciones, tratamientos preventivos y servicios estéticos por horario.',contact:['Consultas dentales con cita','Tratamientos estéticos y preventivos','Pago previo para confirmar horario'],reviews:[['SA','La pantalla se siente limpia y profesional.'],['MO','El resumen ayuda a confirmar el tratamiento.'],['FR','Buena idea separar dental como categoría.']]}
+{id:'principal',nav:'INICIO',name:'Policlínico Enace',sub:'Página principal del policlínico',colors:['#159fe3','#5f63f2','#ffe500'],hero:"url('https://images.unsplash.com/photo-1586773860418-d37222d8fce3?auto=format&fit=crop&w=1900&q=85')",title:'POLICLÍNICO ENACE',text:'Atención médica integral con medicina general, especialidades, laboratorio, rayos X, ecografía, odontología, terapia física, emergencias y ambulancia.',price:65,schedule:'8am-8pm',subs:['Medicina general','Medicina interna','Cardiología','Ginecología','Pediatría','Laboratorio clínico','Rayos X','Ecografía','Terapia física','Ambulancia'],pros:['Central Policlínico Enace','Dr. Medicina General','Área de Laboratorio','Área de Imágenes','Área de Terapia Física'],chips:['Medicina general','Especialidades','Laboratorio','Rayos X','Ecografía','Terapia física','Ambulancia'],benefit:'Integra consultas, diagnóstico y servicios complementarios en una sola agenda digital.',reviews:[]},
+{id:'neuro',nav:'TERAPIAS',name:'Centro Integral del Neurodesarrollo',sub:'Terapias y evaluación especializada',colors:['#2468d1','#00a7c7','#ffe500'],hero:"url('https://images.unsplash.com/photo-1609220136736-443140cffec6?auto=format&fit=crop&w=1900&q=85')",title:'NEURODESARROLLO',text:'Evaluación neuropsicológica, terapia psicológica, lenguaje, terapia ocupacional, integración sensorial, autismo, TDAH, aprendizaje y familia.',price:85,schedule:'Programado',subs:['Evaluación neuropsicológica','Terapia psicológica','Terapia de lenguaje','Terapia ocupacional','Integración sensorial','Estimulación temprana','Terapia familiar','Orientación a padres'],pros:['Especialista en Neurodesarrollo','Psicóloga Infantil','Terapeuta de Lenguaje','Terapeuta Ocupacional'],chips:['Autismo','TDAH','Lenguaje','Ocupacional','Aprendizaje','Familia'],benefit:'Agenda clara para familias que necesitan seguimiento terapéutico continuo.',reviews:[]},
+{id:'juis',nav:'JUIS KIDS',name:'Juis Kids',sub:'Nido, guardería y estimulación temprana',colors:['#1598d1','#ec4899','#ffe500'],hero:"url('https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?auto=format&fit=crop&w=1900&q=85')",title:'JUIS KIDS',text:'Cuna, guardería, estimulación temprana, neurodesarrollo integral, método Montessori, psicomotricidad, apoyo escolar, inglés y computación.',price:50,schedule:'Turnos',subs:['Visita informativa','Nido guardería','Aula bebés','Estimulación temprana','Psicomotricidad','Apoyo escolar','Taller lúdico','Full day'],pros:['Coordinadora Juis Kids','Docente Inicial','Especialista en Estimulación Temprana'],chips:['Guardería','Montessori','Aula bebés','Psicomotricidad','Inglés','Full day'],benefit:'Ideal para registrar visitas, matrículas, evaluaciones iniciales y turnos de cuidado.',reviews:[]},
+{id:'ambulancia',nav:'DOMICILIO',name:'Atención Domiciliaria y Ambulancia',sub:'Atención médica móvil y traslados',colors:['#008d83','#15b8a6','#ffe500'],hero:"url('https://images.unsplash.com/photo-1516574187841-cb9cc2ca948b?auto=format&fit=crop&w=1900&q=85')",title:'AMBULANCIA 24H',text:'Servicio para coordinar atención médica domiciliaria, procedimientos básicos, orientación clínica y traslado en ambulancia según disponibilidad.',price:70,schedule:'24h ambulancia',subs:['Medicina general domiciliaria','Procedimientos básicos','Lavado de oídos','Pie diabético','Atención domiciliaria','Traslado en ambulancia','Orientación clínica','Control de signos vitales'],pros:['Central de coordinación','Equipo Domiciliario','Área de Procedimientos','Central de Ambulancia'],chips:['Domiciliaria','Ambulancia 24h','Procedimientos','Traslados'],benefit:'Coordina visitas a domicilio, procedimientos básicos o traslados sin mezclar esta agenda con las consultas presenciales.',reviews:[]},
+{id:'dental',nav:'DENTAL',name:'Centro Dental',sub:'Odontología moderna y estética',colors:['#008ba7','#4ec9c3','#ffe500'],hero:"url('https://images.unsplash.com/photo-1606811971618-4486d14f3f99?auto=format&fit=crop&w=1900&q=85')",title:'CENTRO DENTAL',text:'Odontología general, limpieza dental, ortodoncia, endodoncia, estética dental, blanqueamiento y diseño de sonrisa.',price:60,schedule:'Cita dental',subs:['Evaluación dental','Odontología general','Limpieza dental','Ortodoncia','Endodoncia','Blanqueamiento dental','Diseño de sonrisa','Resinas estéticas'],pros:['Odontólogo General','Especialista en Ortodoncia','Especialista en Endodoncia','Especialista en Estética Dental'],chips:['Odontología','Limpieza','Ortodoncia','Endodoncia','Estética','Blanqueamiento'],benefit:'Permite ordenar evaluaciones, tratamientos preventivos y servicios estéticos por horario.',reviews:[]}
 ];
 const times=['08:00','08:30','09:00','09:30','10:00','10:30','11:00','11:30','12:00','12:30','14:00','14:30','15:00','15:30','16:00','16:30','17:00','17:30','18:00','18:30','19:00','19:30'];
 let currentId='principal',selectedTime='',paymentMethod='Tarjeta',paymentApproved=false;
 const $=id=>document.getElementById(id),money=n=>'S/ '+Number(n||0).toLocaleString('es-PE');
 function today(){const d=new Date();d.setMinutes(d.getMinutes()-d.getTimezoneOffset());return d.toISOString().slice(0,10)}
 function cur(){return categories.find(c=>c.id===currentId)||categories[0]}
-function data(){return JSON.parse(localStorage.getItem('pe_citas_final_v5')||'[]')}
-function save(d){localStorage.setItem('pe_citas_final_v5',JSON.stringify(d))}
+function data(){return JSON.parse(localStorage.getItem('pe_emer_full_v2')||'[]')}
+function save(d){localStorage.setItem('pe_emer_full_v2',JSON.stringify(d))}
 function code(){return 'PE-'+new Date().getFullYear()+'-'+Math.floor(10000+Math.random()*90000)}
-function nav(){
- const left=categories.slice(1,3),right=categories.slice(3);
- $('categoryStrip').innerHTML =
-   left.map(c=>`<button class="cat ${c.id===currentId?'active':''}" style="--catColor:${c.colors[0]}" data-id="${c.id}">${c.nav}</button>`).join('') +
-   `<button class="p-center" id="homeBtn">P</button>` +
-   right.map(c=>`<button class="cat ${c.id===currentId?'active':''}" style="--catColor:${c.colors[0]}" data-id="${c.id}">${c.nav}</button>`).join('');
- document.querySelectorAll('.cat').forEach(b=>b.onclick=()=>{apply(b.dataset.id);window.scrollTo({top:0,behavior:'smooth'})});
- $('homeBtn').onclick=()=>{apply('principal');window.scrollTo({top:0,behavior:'smooth'})};
-}
-function fill(){
- const opts=categories.map(c=>`<option value="${c.id}">${c.name}</option>`).join('');
- $('categorySelect').innerHTML=opts;$('filterCategory').innerHTML='<option value="">Todas</option>'+categories.map(c=>`<option value="${c.name}">${c.name}</option>`).join('');
- $('dateInput').min=today();$('dateInput').value=today();
-}
-function sync(){
- const c=cur();$('subserviceSelect').innerHTML=c.subs.map(s=>`<option>${s}</option>`).join('');$('professionalSelect').innerHTML=c.pros.map(p=>`<option>${p}</option>`).join('');
-}
-function apply(id){
- currentId=id;const c=cur(),r=document.documentElement;
- ['primary','secondary','accent','bg','soft','soft2'].forEach((k,i)=>r.style.setProperty('--'+k,c.colors[i]));
- r.style.setProperty('--hero',c.hero);r.style.setProperty('--texture',c.texture);
- if($('categoryDisplayName')) $('categoryDisplayName').textContent=c.name;
- if($('categoryDisplaySub')) $('categoryDisplaySub').textContent=c.sub;
- if($('categoryDot')) $('categoryDot').textContent=c.nav.substring(0,2).toUpperCase();
- $('eyebrow').textContent=c.eyebrow;$('heroTitle').innerHTML=c.title.replace(c.name,`<span class="grad">${c.name}</span>`).replace('Neurodesarrollo','<span class="grad">Neurodesarrollo</span>').replace('Juis Kids','<span class="grad">Juis Kids</span>').replace('Ambulancia','<span class="grad">Ambulancia</span>').replace('dental','<span class="grad">dental</span>');
- $('heroText').textContent=c.text;$('statPrice').textContent=money(c.price);$('statSchedule').textContent=c.schedule;$('statMode').textContent=c.mode;
- $('infoTitle').textContent='Información de '+c.name;$('infoSubtitle').textContent='Contenido exclusivo de esta categoría.';$('photoTitle').textContent=c.name;$('photoDesc').textContent=c.text;$('chips').innerHTML=c.chips.map(x=>`<span class="chip">${x}</span>`).join('');
- $('benefit').textContent=c.benefit;$('schedule').textContent=c.schedule;
- $('servicesGrid').innerHTML=c.subs.map((s,i)=>`<article class="carousel-card"><div class="carousel-img" style="background-image:${serviceImage(c.id,i)}"></div><div class="carousel-body"><h3>${s}</h3><p>Atención disponible dentro de ${c.name}. Selecciona esta opción en el registro para reservar un horario.</p><span class="carousel-tag">Reservable online</span></div></article>`).join('');
- $('reviewsSub').textContent='Opiniones referenciales relacionadas con '+c.name+'.';
- $('reviewsGrid').innerHTML=c.reviews.map(r=>`<div class="review"><div class="stars">★★★★★</div><p>“${r[1]}”</p><div class="person"><div class="avatar">${r[0]}</div><span>Paciente verificado</span></div></div>`).join('');
- $('contactGrid').innerHTML=c.contact.map((x,i)=>`<div class="contact-card"><h3>${['Contacto principal','Disponibilidad','Detalle'][i]||'Información'}</h3><p>${x}</p></div>`).join('');
- $('categorySelect').value=currentId;sync();selectedTime='';paymentApproved=false;nav();slots();summary();
-}
+function nav(){ $('menu').innerHTML=categories.map(c=>`<button class="${c.id===currentId?'active':''}" data-id="${c.id}">${c.nav}</button>`).join(''); document.querySelectorAll('#menu button').forEach(b=>b.onclick=()=>{apply(b.dataset.id);window.scrollTo({top:0,behavior:'smooth'})});}
+function fill(){const opts=categories.map(c=>`<option value="${c.id}">${c.name}</option>`).join('');$('categorySelect').innerHTML=opts;$('filterCategory').innerHTML='<option value="">Todas</option>'+categories.map(c=>`<option value="${c.name}">${c.name}</option>`).join('');$('dateInput').min=today();$('dateInput').value=today();}
+function sync(){const c=cur();$('subserviceSelect').innerHTML=c.subs.map(s=>`<option>${s}</option>`).join('');$('professionalSelect').innerHTML=c.pros.map(p=>`<option>${p}</option>`).join('');}
+function img(id,i){const a={principal:["https://images.unsplash.com/photo-1584982751601-97dcc096659c?auto=format&fit=crop&w=900&q=80","https://images.unsplash.com/photo-1579154204601-01588f351e67?auto=format&fit=crop&w=900&q=80"],neuro:["https://images.unsplash.com/photo-1609220136736-443140cffec6?auto=format&fit=crop&w=900&q=80","https://images.unsplash.com/photo-1588072432836-e10032774350?auto=format&fit=crop&w=900&q=80"],juis:["https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?auto=format&fit=crop&w=900&q=80","https://images.unsplash.com/photo-1587654780291-39c9404d746b?auto=format&fit=crop&w=900&q=80"],ambulancia:["https://images.unsplash.com/photo-1516574187841-cb9cc2ca948b?auto=format&fit=crop&w=900&q=80","https://images.unsplash.com/photo-1587351021759-3e566b6af7cc?auto=format&fit=crop&w=900&q=80"],dental:["https://images.unsplash.com/photo-1606811971618-4486d14f3f99?auto=format&fit=crop&w=900&q=80","https://images.unsplash.com/photo-1629909613654-28e377c37b09?auto=format&fit=crop&w=900&q=80"]};let ar=a[id]||a.principal;return ar[i%ar.length]}
+function apply(id){currentId=id;const c=cur(),r=document.documentElement;r.style.setProperty('--primary',c.colors[0]);r.style.setProperty('--secondary',c.colors[1]);r.style.setProperty('--hero',c.hero);$('heroTitle').textContent=c.title;$('heroText').textContent=c.text;$('welcomeText').textContent=c.text;$('infoTitle').textContent=c.name;$('infoSubtitle').textContent='Información exclusiva de esta categoría de atención.';$('featureTitle').textContent=c.name;$('featureDesc').textContent=c.text;$('chips').innerHTML=c.chips.map(x=>`<span class="chip">${x}</span>`).join('');$('benefit').textContent=c.benefit;$('schedule').textContent=c.schedule;$('servicesGrid').innerHTML=c.subs.map((s,i)=>`<article class="service-card"><h3>${s}</h3><p>Atención disponible dentro de ${c.name}. Selecciona esta opción en el registro.</p><a class="yellow-btn" href="#registro">+ Ver más</a></article>`).join('');$('categorySelect').value=currentId;$('categoryDisplayName').textContent=c.name;$('categoryDisplaySub').textContent=c.sub;$('categoryDot').textContent=c.nav.substring(0,1).toUpperCase();sync();selectedTime='';paymentApproved=false;nav();slots();summary();}
 function booked(cat,date,time){return data().some(a=>a.categoryId===cat&&a.date===date&&a.time===time&&a.status!=='Cancelado')}
-function slots(){
- const date=$('dateInput').value,now=new Date(),isToday=date===today();
- $('slotsGrid').innerHTML=times.map(t=>{const[h,m]=t.split(':').map(Number),d=new Date();d.setHours(h,m,0,0);const past=isToday&&d<now,b=booked(currentId,date,t),cls=b?'booked':past?'past':selectedTime===t?'selected':'';return `<div class="slot ${cls}" data-time="${t}">${b?t+' ocupado':t}</div>`}).join('');
- document.querySelectorAll('.slot').forEach(s=>s.onclick=()=>{if(s.classList.contains('booked')||s.classList.contains('past'))return;selectedTime=s.dataset.time;paymentApproved=false;slots();summary()});
-}
-function summary(){
- const c=cur();$('sumCategory').textContent=c.name;$('sumSubservice').textContent=$('subserviceSelect').value||'-';$('sumProfessional').textContent=$('professionalSelect').value||'-';$('sumDate').textContent=$('dateInput').value||'-';$('sumTime').textContent=selectedTime||'Pendiente';$('sumType').textContent=$('attentionType').value;$('sumPrice').textContent=money(c.price);$('confirmBtn').disabled=!paymentApproved;
- $('paymentNotice').className=paymentApproved?'notice success':'notice';$('paymentNotice').textContent=paymentApproved?`Pago aprobado por ${paymentMethod}. Ya puedes confirmar la cita.`:'Pago pendiente. La cita aún no puede confirmarse.';
-}
+function slots(){const date=$('dateInput').value,now=new Date(),isToday=date===today();$('slotsGrid').innerHTML=times.map(t=>{const[h,m]=t.split(':').map(Number),d=new Date();d.setHours(h,m,0,0);const past=isToday&&d<now,b=booked(currentId,date,t),cls=b?'booked':past?'past':selectedTime===t?'selected':'';return `<div class="slot ${cls}" data-time="${t}">${b?t+' ocupado':t}</div>`}).join('');document.querySelectorAll('.slot').forEach(s=>s.onclick=()=>{if(s.classList.contains('booked')||s.classList.contains('past'))return;selectedTime=s.dataset.time;paymentApproved=false;slots();summary()});}
+function summary(){const c=cur();$('sumCategory').textContent=c.name;$('sumSubservice').textContent=$('subserviceSelect').value||'-';$('sumProfessional').textContent=$('professionalSelect').value||'-';$('sumDate').textContent=$('dateInput').value||'-';$('sumTime').textContent=selectedTime||'Pendiente';$('sumType').textContent=$('attentionType').value;$('sumPrice').textContent=money(c.price);$('confirmBtn').disabled=!paymentApproved;$('paymentNotice').className=paymentApproved?'notice success':'notice';$('paymentNotice').textContent=paymentApproved?`Pago aprobado por ${paymentMethod}. Ya puedes confirmar la cita.`:'Pago pendiente. La cita aún no puede confirmarse.';}
 function notice(id,type,msg){const e=$(id);e.className='notice '+type;e.textContent=msg;e.classList.remove('hidden');if(type==='error')setTimeout(()=>e.classList.add('hidden'),4200)}
-function validate(){
- for(const id of ['nameInput','phoneInput','emailInput','ageInput','docInput'])if(!$(id).value.trim()){notice('formNotice','error','Completa los datos obligatorios.');return false}
- if(!selectedTime){notice('formNotice','error','Selecciona un horario disponible.');return false}
- if(!paymentApproved){notice('formNotice','error','Primero aprueba el pago.');return false}
- if(booked(currentId,$('dateInput').value,selectedTime)){notice('formNotice','error','Ese horario acaba de ocuparse.');selectedTime='';slots();summary();return false}
- return true
-}
-function confirmBooking(){
- if(!validate())return;const c=cur(),row={id:code(),categoryId:c.id,category:c.name,subservice:$('subserviceSelect').value,professional:$('professionalSelect').value,attentionType:$('attentionType').value,date:$('dateInput').value,time:selectedTime,patient:$('nameInput').value.trim(),doc:$('docInput').value.trim(),phone:$('phoneInput').value.trim(),email:$('emailInput').value.trim(),age:$('ageInput').value.trim(),notes:$('notesInput').value.trim(),paymentMethod,status:'Pagado',price:c.price,createdAt:new Date().toISOString()};
- save([...data(),row]);$('receipt').innerHTML=`<strong>Código:</strong> ${row.id}<br><strong>Paciente:</strong> ${row.patient}<br><strong>Categoría:</strong> ${row.category}<br><strong>Atención:</strong> ${row.subservice}<br><strong>Profesional:</strong> ${row.professional}<br><strong>Fecha y hora:</strong> ${row.date} · ${row.time}<br><strong>Pago:</strong> ${row.paymentMethod} · ${money(row.price)}`;
- $('modal').classList.add('show');['nameInput','phoneInput','emailInput','ageInput','docInput','notesInput'].forEach(id=>$(id).value='');selectedTime='';paymentApproved=false;slots();summary();dashboard();
-}
+function validate(){for(const id of ['nameInput','phoneInput','emailInput','ageInput','docInput'])if(!$(id).value.trim()){notice('formNotice','error','Completa los datos obligatorios.');return false}if(!selectedTime){notice('formNotice','error','Selecciona un horario disponible.');return false}if(!paymentApproved){notice('formNotice','error','Primero aprueba el pago.');return false}if(booked(currentId,$('dateInput').value,selectedTime)){notice('formNotice','error','Ese horario acaba de ocuparse.');selectedTime='';slots();summary();return false}return true}
+function confirmBooking(){if(!validate())return;const c=cur(),row={id:code(),categoryId:c.id,category:c.name,subservice:$('subserviceSelect').value,professional:$('professionalSelect').value,attentionType:$('attentionType').value,date:$('dateInput').value,time:selectedTime,patient:$('nameInput').value.trim(),doc:$('docInput').value.trim(),phone:$('phoneInput').value.trim(),email:$('emailInput').value.trim(),age:$('ageInput').value.trim(),notes:$('notesInput').value.trim(),paymentMethod,status:'Pagado',price:c.price,createdAt:new Date().toISOString()};save([...data(),row]);$('receipt').innerHTML=`<strong>Código:</strong> ${row.id}<br><strong>Paciente:</strong> ${row.patient}<br><strong>Categoría:</strong> ${row.category}<br><strong>Atención:</strong> ${row.subservice}<br><strong>Profesional:</strong> ${row.professional}<br><strong>Fecha y hora:</strong> ${row.date} · ${row.time}<br><strong>Pago:</strong> ${row.paymentMethod} · ${money(row.price)}`;$('modal').classList.add('show');['nameInput','phoneInput','emailInput','ageInput','docInput','notesInput'].forEach(id=>$(id).value='');selectedTime='';paymentApproved=false;slots();summary();dashboard();}
 function admin(){ $('patientView').style.display='none';$('adminView').style.display='block';window.scrollTo({top:0,behavior:'smooth'});dashboard() }
 function patient(){ $('adminView').style.display='none';$('patientView').style.display='block';window.scrollTo({top:0,behavior:'smooth'}) }
 function login(){ if($('adminUser').value==='admin'&&$('adminPass').value==='1234'){$('loginPanel').style.display='none';$('dashboardPanel').style.display='block';dashboard()}else notice('loginNotice','error','Usuario o contraseña incorrectos.') }
 function filtered(){const fd=$('filterDate').value,fc=$('filterCategory').value,fs=$('filterStatus').value;return data().filter(a=>(!fd||a.date===fd)&&(!fc||a.category===fc)&&(!fs||a.status===fs)).sort((a,b)=>(a.date+a.time).localeCompare(b.date+b.time))}
-function dashboard(){
- const all=data(),paid=all.filter(a=>a.status==='Pagado'),rev=paid.reduce((s,a)=>s+Number(a.price||0),0),tod=all.filter(a=>a.date===today()&&a.status!=='Cancelado').length,counts={};paid.forEach(a=>counts[a.category]=(counts[a.category]||0)+1);const top=Object.entries(counts).sort((a,b)=>b[1]-a[1])[0];
- $('kpiPaid').textContent=paid.length;$('kpiRevenue').textContent=money(rev);$('kpiToday').textContent=tod;$('kpiTop').textContent=top?top[0]:'-';
- const rows=filtered();$('appointmentsTable').innerHTML=rows.length?rows.map(a=>`<tr><td><strong>${a.id}</strong><br><small>${new Date(a.createdAt).toLocaleString('es-PE')}</small></td><td>${a.patient}<br><small>${a.doc} · ${a.phone}</small></td><td>${a.category}</td><td>${a.subservice}<br><small>${a.attentionType}</small></td><td>${a.professional}</td><td><strong>${a.date}</strong><br>${a.time}</td><td><span class="status ${a.status==='Pagado'?'paid':'cancelled'}">${a.status}</span><br><small>${a.paymentMethod}</small></td><td><strong>${money(a.price)}</strong></td><td>${a.status!=='Cancelado'?`<button class="btn btn-danger" onclick="cancelAppointment('${a.id}')">Cancelar</button>`:'<small>Cancelada</small>'}</td></tr>`).join(''):`<tr><td colspan="9" style="text-align:center;padding:24px;color:#64748b">No hay citas registradas.</td></tr>`;
- timeline(all)
-}
+function dashboard(){const all=data(),paid=all.filter(a=>a.status==='Pagado'),rev=paid.reduce((s,a)=>s+Number(a.price||0),0),tod=all.filter(a=>a.date===today()&&a.status!=='Cancelado').length,counts={};paid.forEach(a=>counts[a.category]=(counts[a.category]||0)+1);const top=Object.entries(counts).sort((a,b)=>b[1]-a[1])[0];$('kpiPaid').textContent=paid.length;$('kpiRevenue').textContent=money(rev);$('kpiToday').textContent=tod;$('kpiTop').textContent=top?top[0]:'-';const rows=filtered();$('appointmentsTable').innerHTML=rows.length?rows.map(a=>`<tr><td><strong>${a.id}</strong><br><small>${new Date(a.createdAt).toLocaleString('es-PE')}</small></td><td>${a.patient}<br><small>${a.doc} · ${a.phone}</small></td><td>${a.category}</td><td>${a.subservice}<br><small>${a.attentionType}</small></td><td>${a.professional}</td><td><strong>${a.date}</strong><br>${a.time}</td><td><span class="status ${a.status==='Pagado'?'paid':'cancelled'}">${a.status}</span><br><small>${a.paymentMethod}</small></td><td><strong>${money(a.price)}</strong></td><td>${a.status!=='Cancelado'?`<button class="btn btn-danger" onclick="cancelAppointment('${a.id}')">Cancelar</button>`:'<small>Cancelada</small>'}</td></tr>`).join(''):`<tr><td colspan="9" style="text-align:center;padding:24px;color:#667085">No hay citas registradas.</td></tr>`;timeline(all)}
 function timeline(all){const active=all.filter(a=>a.status!=='Cancelado'),max=Math.max(1,...times.map(t=>active.filter(a=>a.time===t).length));$('timeline').innerHTML=times.map(t=>{const n=active.filter(a=>a.time===t).length,p=Math.round(n/max*100);return `<div class="time-row"><strong>${t}</strong><div class="bar-wrap"><div class="bar" style="width:${p}%"></div></div><span>${n}</span></div>`}).join('')}
 window.cancelAppointment=id=>{save(data().map(a=>a.id===id?{...a,status:'Cancelado'}:a));dashboard();slots()}
-function seed(){const s=[['principal','Policlínico Enace','Medicina general','Dr. Medicina General','08:30','Ana Torres',65],['neuro','Centro Integral del Neurodesarrollo','Terapia de lenguaje','Terapeuta de Lenguaje','10:00','Mateo Rojas',85],['juis','Juis Kids','Visita informativa','Coordinadora Juis Kids','11:30','Lucía Pérez',50],['ponce','Atención Domiciliaria y Ambulancia','Atención domiciliaria','Equipo Domiciliario','15:00','Rosa Salazar',70],['dental','Centro Dental','Limpieza dental','Odontólogo General','17:30','Carlos Díaz',60]];save([...data(),...s.map(x=>({id:code(),categoryId:x[0],category:x[1],subservice:x[2],professional:x[3],date:today(),time:x[4],patient:x[5],price:x[6],doc:'00000000',phone:'999999999',email:'demo@correo.com',age:'30',notes:'Dato demo',attentionType:'Presencial',paymentMethod:'Tarjeta',status:'Pagado',createdAt:new Date().toISOString()}))]);dashboard();slots()}
+function seed(){const s=[['principal','Policlínico Enace','Medicina general','Dr. Medicina General','08:30','Ana Torres',65],['neuro','Centro Integral del Neurodesarrollo','Terapia de lenguaje','Terapeuta de Lenguaje','10:00','Mateo Rojas',85],['juis','Juis Kids','Visita informativa','Coordinadora Juis Kids','11:30','Lucía Pérez',50],['ambulancia','Atención Domiciliaria y Ambulancia','Atención domiciliaria','Equipo Domiciliario','15:00','Rosa Salazar',70],['dental','Centro Dental','Limpieza dental','Odontólogo General','17:30','Carlos Díaz',60]];save([...data(),...s.map(x=>({id:code(),categoryId:x[0],category:x[1],subservice:x[2],professional:x[3],date:today(),time:x[4],patient:x[5],price:x[6],doc:'00000000',phone:'999999999',email:'demo@correo.com',age:'30',notes:'Dato demo',attentionType:'Presencial',paymentMethod:'Tarjeta',status:'Pagado',createdAt:new Date().toISOString()}))]);dashboard();slots()}
 function exportCsv(){const d=filtered();if(!d.length){alert('No hay citas para exportar.');return}const h=['Codigo','Paciente','Documento','Telefono','Correo','Categoria','Atencion','Profesional','Fecha','Hora','Tipo','MetodoPago','Estado','Total','Notas'],rows=d.map(a=>[a.id,a.patient,a.doc,a.phone,a.email,a.category,a.subservice,a.professional,a.date,a.time,a.attentionType,a.paymentMethod,a.status,a.price,a.notes]),csv=[h,...rows].map(r=>r.map(v=>`"${String(v??'').replaceAll('"','""')}"`).join(',')).join('\n'),blob=new Blob([csv],{type:'text/csv;charset=utf-8'}),url=URL.createObjectURL(blob),link=document.createElement('a');link.href=url;link.download='citas_policlinico_enace.csv';link.click();URL.revokeObjectURL(url)}
-
-function serviceImage(categoryId,i){
- const imgs={
-  principal:[
-   "url('https://images.unsplash.com/photo-1584982751601-97dcc096659c?auto=format&fit=crop&w=900&q=80')",
-   "url('https://images.unsplash.com/photo-1579154204601-01588f351e67?auto=format&fit=crop&w=900&q=80')",
-   "url('https://images.unsplash.com/photo-1622253692010-333f2da6031d?auto=format&fit=crop&w=900&q=80')",
-   "url('https://images.unsplash.com/photo-1550831107-1553da8c8464?auto=format&fit=crop&w=900&q=80')"
-  ],
-  neuro:[
-   "url('https://images.unsplash.com/photo-1609220136736-443140cffec6?auto=format&fit=crop&w=900&q=80')",
-   "url('https://images.unsplash.com/photo-1588072432836-e10032774350?auto=format&fit=crop&w=900&q=80')",
-   "url('https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?auto=format&fit=crop&w=900&q=80')",
-   "url('https://images.unsplash.com/photo-1587654780291-39c9404d746b?auto=format&fit=crop&w=900&q=80')"
-  ],
-  juis:[
-   "url('https://images.unsplash.com/photo-1503454537195-1dcabb73ffb9?auto=format&fit=crop&w=900&q=80')",
-   "url('https://images.unsplash.com/photo-1587654780291-39c9404d746b?auto=format&fit=crop&w=900&q=80')",
-   "url('https://images.unsplash.com/photo-1564429238817-393bd4286b2d?auto=format&fit=crop&w=900&q=80')",
-   "url('https://images.unsplash.com/photo-1544776193-352d25ca82cd?auto=format&fit=crop&w=900&q=80')"
-  ],
-  ponce:[
-   "url('https://images.unsplash.com/photo-1516574187841-cb9cc2ca948b?auto=format&fit=crop&w=900&q=80')",
-   "url('https://images.unsplash.com/photo-1587351021759-3e566b6af7cc?auto=format&fit=crop&w=900&q=80')",
-   "url('https://images.unsplash.com/photo-1584515933487-779824d29309?auto=format&fit=crop&w=900&q=80')",
-   "url('https://images.unsplash.com/photo-1584982751601-97dcc096659c?auto=format&fit=crop&w=900&q=80')"
-  ],
-  dental:[
-   "url('https://images.unsplash.com/photo-1606811971618-4486d14f3f99?auto=format&fit=crop&w=900&q=80')",
-   "url('https://images.unsplash.com/photo-1629909613654-28e377c37b09?auto=format&fit=crop&w=900&q=80')",
-   "url('https://images.unsplash.com/photo-1588776814546-1ffcf47267a5?auto=format&fit=crop&w=900&q=80')",
-   "url('https://images.unsplash.com/photo-1629909615184-74f495363b67?auto=format&fit=crop&w=900&q=80')"
-  ]
- };
- const arr=imgs[categoryId]||imgs.principal;
- return arr[i%arr.length];
-}
-
-function bind(){
- $('adminBtn').onclick=admin;$('backPatientBtn').onclick=patient; if($('carouselPrev')) $('carouselPrev').onclick=()=>$('servicesGrid').scrollBy({left:-340,behavior:'smooth'}); if($('carouselNext')) $('carouselNext').onclick=()=>$('servicesGrid').scrollBy({left:340,behavior:'smooth'});
- ['subserviceSelect','professionalSelect','attentionType'].forEach(id=>$(id).onchange=summary);$('dateInput').onchange=()=>{selectedTime='';paymentApproved=false;slots();summary()};
- document.querySelectorAll('.pay').forEach(p=>p.onclick=()=>{document.querySelectorAll('.pay').forEach(x=>x.classList.remove('active'));p.classList.add('active');paymentMethod=p.dataset.pay;paymentApproved=false;summary()});
- $('payBtn').onclick=()=>{if(!selectedTime){notice('formNotice','error','Primero selecciona un horario.');return}paymentApproved=true;summary()};$('confirmBtn').onclick=confirmBooking;$('closeModal').onclick=()=>$('modal').classList.remove('show');
- $('loginBtn').onclick=login;$('logoutBtn').onclick=()=>{$('dashboardPanel').style.display='none';$('loginPanel').style.display='block';$('adminUser').value='';$('adminPass').value=''};$('seedBtn').onclick=seed;$('exportBtn').onclick=exportCsv;$('clearBtn').onclick=()=>{if(confirm('¿Limpiar todas las citas?')){save([]);dashboard();slots()}};
- ['filterDate','filterCategory','filterStatus'].forEach(id=>$(id).onchange=dashboard);$('resetFilters').onclick=()=>{$('filterDate').value='';$('filterCategory').value='';$('filterStatus').value='';dashboard()}
-}
+function bind(){ $('homeBtn').onclick=()=>{apply('principal');window.scrollTo({top:0,behavior:'smooth'})};$('adminBtn').onclick=admin;$('backPatientBtn').onclick=patient;$('carouselPrev').onclick=()=>$('servicesGrid').scrollBy({left:-340,behavior:'smooth'});$('carouselNext').onclick=()=>$('servicesGrid').scrollBy({left:340,behavior:'smooth'});['subserviceSelect','professionalSelect','attentionType'].forEach(id=>$(id).onchange=summary);$('dateInput').onchange=()=>{selectedTime='';paymentApproved=false;slots();summary()};document.querySelectorAll('.pay').forEach(p=>p.onclick=()=>{document.querySelectorAll('.pay').forEach(x=>x.classList.remove('active'));p.classList.add('active');paymentMethod=p.dataset.pay;paymentApproved=false;summary()});$('payBtn').onclick=()=>{if(!selectedTime){notice('formNotice','error','Primero selecciona un horario.');return}paymentApproved=true;summary()};$('confirmBtn').onclick=confirmBooking;$('closeModal').onclick=()=>$('modal').classList.remove('show');$('loginBtn').onclick=login;$('logoutBtn').onclick=()=>{$('dashboardPanel').style.display='none';$('loginPanel').style.display='block';$('adminUser').value='';$('adminPass').value=''};$('seedBtn').onclick=seed;$('exportBtn').onclick=exportCsv;$('clearBtn').onclick=()=>{if(confirm('¿Limpiar todas las citas?')){save([]);dashboard();slots()}};['filterDate','filterCategory','filterStatus'].forEach(id=>$(id).onchange=dashboard);$('resetFilters').onclick=()=>{$('filterDate').value='';$('filterCategory').value='';$('filterStatus').value='';dashboard()}}
 fill();apply('principal');bind();
 </script>
 </body>
